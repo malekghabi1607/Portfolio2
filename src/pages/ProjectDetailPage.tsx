@@ -24,13 +24,14 @@ const renderLong = (val?: string | string[]) =>
 interface ProjectDetailPageProps {
   isDark: boolean;
   setIsDark: (isDark: boolean) => void;
+  language: Lang;
+  setLanguage: (language: Lang) => void;
 }
 
-export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPageProps) {
+export default function ProjectDetailPage({ isDark, setIsDark, language, setLanguage }: ProjectDetailPageProps) {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
-  const [language, setLanguage] = useState<Lang>('fr');
 
   // Récupère le projet par son id (depuis data/projects.ts)
   const project = useMemo<Project | undefined>(() => {
@@ -62,7 +63,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
             onClick={() => navigate('/')}
             className={`px-6 py-3 rounded-lg transition-colors ${
               isDark
-                ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white'
+                ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white'
                 : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800 text-white'
             }`}
           >
@@ -107,7 +108,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
               onClick={() => navigate('/')}
               className={`text-4xl font-bold ${
                 isDark
-                  ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent'
+                  ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500 bg-clip-text text-transparent'
                   : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800 bg-clip-text text-transparent'
               }`}
               style={{ fontFamily: 'Georgia, serif' }}
@@ -119,7 +120,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
               <button
                 onClick={() => setIsDark(!isDark)}
                 className={`p-2 rounded-full transition-all duration-300 ${
-                  isDark ? 'bg-orange-500 hover:bg-orange-400' : 'bg-slate-900 hover:bg-slate-800'
+                  isDark ? 'bg-cyan-500 hover:bg-cyan-400' : 'bg-slate-900 hover:bg-slate-800'
                 }`}
                 aria-label="Toggle dark mode"
               >
@@ -129,7 +130,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                 onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-white transition-all duration-300 font-medium text-sm shadow-md hover:shadow-lg ${
                   isDark
-                    ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500'
+                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500'
                     : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'
                 }`}
                 aria-label="Toggle language"
@@ -147,7 +148,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
         <button
           onClick={() => navigate('/')}
           className={`flex items-center gap-2 transition-colors mb-8 group font-medium ${
-            isDark ? 'text-gray-300 hover:text-orange-400' : 'text-gray-700 hover:text-blue-900'
+            isDark ? 'text-gray-300 hover:text-cyan-400' : 'text-gray-700 hover:text-blue-900'
           }`}
         >
           <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
@@ -162,12 +163,12 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
         <div className="mb-8">
           <h1
             className={`text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-6 ${
-              isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'
+              isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'
             }`}
           >
             {toText(title)}
           </h1>
-          <div className={`w-20 h-1 mb-8 ${isDark ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} />
+          <div className={`w-20 h-1 mb-8 ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} />
 
           <div className="flex gap-4 mb-8">
             {(['overview', 'details', 'media'] as Tab[]).map((tab) => (
@@ -177,7 +178,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                 className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                   activeTab === tab
                     ? isDark
-                      ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-md'
+                      ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
                       : 'bg-gradient-to-r from-slate-900 to-blue-900 text-white shadow-md'
                     : isDark
                     ? 'bg-gray-800/60 text-gray-300 hover:bg-gray-800'
@@ -217,7 +218,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                   }`}
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <Code2 className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} />
+                    <Code2 className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
                     <h3 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>{techCount}</h3>
                   </div>
                   <p className={`text-xs uppercase font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -231,7 +232,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                   }`}
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <Layers className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} />
+                    <Layers className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
                     <h3 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>{functionalityCount}</h3>
                   </div>
                   <p className={`text-xs uppercase font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -240,22 +241,49 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                 </div>
               </div>
 
-              {/* Bouton GitHub */}
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-all duration-300 mb-8 shadow-md hover:shadow-lg font-medium ${
-                    isDark
-                      ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500'
-                      : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'
-                  }`}
-                >
-                  <Github className="w-5 h-5" />
-                  <span>GitHub</span>
-                  <ExternalLink className="w-4 h-4 opacity-80" />
-                </a>
+              {(project.githubUrl || project.liveUrl) && (
+                <div className="mb-8">
+                  <div className="flex flex-wrap items-center gap-3">
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg font-medium ${
+                          isDark
+                            ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500'
+                            : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'
+                        }`}
+                      >
+                        <Github className="w-5 h-5" />
+                        <span>GitHub</span>
+                        <ExternalLink className="w-4 h-4 opacity-80" />
+                      </a>
+                    )}
+
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg font-medium ${
+                          isDark
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500'
+                            : 'bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-600 hover:to-teal-600'
+                        }`}
+                      >
+                        <ExternalLink className="w-5 h-5" />
+                        <span>{language === 'fr' ? 'Voir le site' : 'View site'}</span>
+                      </a>
+                    )}
+                  </div>
+
+                  {(project.liveNoteFr || project.liveNoteEn) && (
+                    <p className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {language === 'fr' ? (project.liveNoteFr ?? project.liveNoteEn) : (project.liveNoteEn ?? project.liveNoteFr)}
+                    </p>
+                  )}
+                </div>
               )}
 
               {/* Tech badges */}
@@ -265,7 +293,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                 }`}
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <Code2 className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} />
+                  <Code2 className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
                   <h3 className={`text-xl md:text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
                     {language === 'fr' ? 'Technologies utilisées' : 'Technologies used'}
                   </h3>
@@ -275,7 +303,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                     <span
                       key={tech}
                       className={`px-3 py-1.5 text-white text-sm rounded-lg font-medium shadow-sm ${
-                        isDark ? 'bg-gradient-to-r from-orange-600 to-red-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'
+                        isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'
                       }`}
                     >
                       {tech}
@@ -302,7 +330,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                   }`}
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <Layers className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} />
+                    <Layers className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
                     <h3 className={`text-xl md:text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
                       {language === 'fr' ? 'Principales fonctionnalités' : 'Main features'}
                     </h3>
@@ -317,7 +345,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                       >
                         <span
                           className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                            isDark ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'
+                            isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'
                           }`}
                         />
                         <span>{f}</span>
@@ -363,7 +391,7 @@ export default function ProjectDetailPage({ isDark, setIsDark }: ProjectDetailPa
                     >
                       <span
                         className={`w-2 h-2 rounded-full mt-2.5 flex-shrink-0 ${
-                          isDark ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'
+                          isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'
                         }`}
                       />
                       <span>{c}</span>

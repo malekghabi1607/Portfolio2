@@ -18,6 +18,28 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    year: '2026',
+    titleFr: 'Stagiaire Développeuse Python',
+    titleEn: 'Python Developer Intern',
+    company: 'CEA - Marcoule (INSTN, UEM) - Bagnols-sur-Cèze',
+    tasksFr: [
+      'Développement d\'une suite d\'outils Python pour l\'automatisation de documents (Word, Excel, PowerPoint, PDF, Outlook).',
+      'Création d\'une interface graphique (Tkinter / PySimpleGUI).',
+      'Implémentation d\'un code modulaire, maintenable et structuré (PEP8, gestion des erreurs, logs).',
+      'Participation à la mise en place d\'un système qualité documentaire (vérification, archivage, structuration des données).',
+      'Collaboration avec l\'équipe métier et gestion de versions avec Git.'
+    ],
+    tasksEn: [
+      'Developed a Python tool suite for document automation (Word, Excel, PowerPoint, PDF, Outlook).',
+      'Built a graphical interface (Tkinter / PySimpleGUI).',
+      'Implemented modular, maintainable, and structured code (PEP8, error handling, logging).',
+      'Contributed to a document-quality workflow (verification, archiving, and data structuring).',
+      'Collaborated with business teams and used Git for version control.'
+    ],
+    statusFr: '(stage)',
+    statusEn: '(internship)'
+  },
+  {
     year: '2025-2026',
     titleFr: 'Caissière',
     titleEn: 'Cashier',
@@ -54,7 +76,6 @@ export const experiences: Experience[] = [
     titleFr: 'Gestionnaire d\'exploitation',
     titleEn: 'Operations Manager',
     company: 'CERP - Laboratoire pharmaceutique',
-    companyEn: 'CERP - Pharmaceutical Laboratory',
     tasksFr: [
       'Vérification des lots et péremptions.',
       'Réception, gestion du stock et préparation des médicaments.'

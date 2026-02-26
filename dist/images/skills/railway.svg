@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Railway">
+  <rect width="128" height="128" rx="20" fill="#0F172A"/>
+  <path d="M28 86h72" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+  <path d="M40 86V42l20 18 20-18v44" stroke="#A78BFA" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

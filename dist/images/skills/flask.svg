@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Flask">
+  <rect width="128" height="128" rx="20" fill="#111827"/>
+  <path d="M52 22h24v10l-6 10v18l22 34H36l22-34V42l-6-10z" fill="#fff"/>
+  <rect x="48" y="88" width="32" height="8" fill="#60A5FA"/>
+</svg>

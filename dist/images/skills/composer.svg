@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Composer">
+  <rect width="128" height="128" rx="20" fill="#885630"/>
+  <path d="M46 38h36v52H46z" fill="#F1E3D3"/>
+  <path d="M46 50h36M46 62h36M46 74h24" stroke="#885630" stroke-width="4"/>
+</svg>

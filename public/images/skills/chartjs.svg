@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Chart.js">
+  <rect width="128" height="128" rx="20" fill="#0F172A"/>
+  <line x1="28" y1="96" x2="100" y2="96" stroke="#E2E8F0" stroke-width="6"/>
+  <line x1="28" y1="96" x2="28" y2="32" stroke="#E2E8F0" stroke-width="6"/>
+  <polyline points="34,84 52,70 68,76 86,52 98,58" fill="none" stroke="#FF6384" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

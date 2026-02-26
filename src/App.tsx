@@ -4,6 +4,8 @@ import WelcomeSplash from './components/WelcomeSplash';
 import HomePage from './pages/HomePage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
 
+type Lang = 'fr' | 'en';
+
 function App() {
   const [showSplash, setShowSplash] = useState(true);
 
@@ -33,6 +35,24 @@ function App() {
     }
   }, [isDark]);
 
+  const [language, setLanguage] = useState<Lang>(() => {
+    try {
+      const saved = localStorage.getItem('language');
+      if (saved === 'fr' || saved === 'en') return saved;
+    } catch (err) {
+      console.debug('language read failed', err);
+    }
+    return 'fr';
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('language', language);
+    } catch (err) {
+      console.debug('language write failed', err);
+    }
+  }, [language]);
+
   if (showSplash) {
     return <WelcomeSplash onComplete={() => setShowSplash(false)} />;
   }
@@ -42,11 +62,25 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<HomePage isDark={isDark} setIsDark={setIsDark} />}
+          element={
+            <HomePage
+              isDark={isDark}
+              setIsDark={setIsDark}
+              language={language}
+              setLanguage={setLanguage}
+            />
+          }
         />
         <Route
           path="/project/:id"
-          element={<ProjectDetailPage isDark={isDark} setIsDark={setIsDark} />}
+          element={
+            <ProjectDetailPage
+              isDark={isDark}
+              setIsDark={setIsDark}
+              language={language}
+              setLanguage={setLanguage}
+            />
+          }
         />
       </Routes>
     </Router>

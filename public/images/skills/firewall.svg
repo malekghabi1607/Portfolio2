@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Firewall">
+  <rect width="128" height="128" rx="20" fill="#7F1D1D"/>
+  <rect x="20" y="28" width="88" height="18" fill="#FCA5A5"/>
+  <rect x="20" y="54" width="88" height="18" fill="#F87171"/>
+  <rect x="20" y="80" width="88" height="18" fill="#EF4444"/>
+  <path d="M46 28v70M82 28v70" stroke="#7F1D1D" stroke-width="8"/>
+</svg>

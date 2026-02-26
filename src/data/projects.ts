@@ -22,6 +22,9 @@ export interface Project {
   image: string;
   galleryImages?: string[];
   githubUrl?: string;
+  liveUrl?: string;
+  liveNoteFr?: string;
+  liveNoteEn?: string;
 }
 
 export const projects: Project[] = [
@@ -155,7 +158,12 @@ export const projects: Project[] = [
       '/images/projects/luna-perla2.jpg',
       '/images/projects/luna-perla3.jpg'
     ],
-    githubUrl: 'https://github.com/malekghabi1607/Luna_Perla'
+
+    
+    githubUrl: 'https://github.com/malekghabi1607/Luna_Perla',
+    liveUrl: 'https://pedago01c.univ-avignon.fr/~uapv2401806/luna_perla-/',
+    liveNoteFr: 'Acces via VPN universitaire requis.',
+    liveNoteEn: 'University VPN access required.',
   },
 
   {
@@ -814,91 +822,174 @@ export const projects: Project[] = [
     '/images/projects/portfolio-v1-3.jpg'
   ],
   githubUrl: 'https://github.com/malekghabi1607/Portfolio-',
+  liveUrl: 'https://www.portfoliomalekghabi.com',
+},
+
+{
+  id: 'cericar',
+  title: 'CERICar',
+  titleEn: 'CERICar',
+
+  descriptionFr:
+    "Application web de covoiturage developpee en Yii2 (template basic) pour faciliter la recherche et la reservation de trajets avec des interactions AJAX rapides.",
+  descriptionEn:
+    "Carpooling web application built with Yii2 (basic template) to make trip search and booking easier through fast AJAX interactions.",
+
+  longDescriptionFr: [
+    "CERICar est un projet web realise en Licence 3 Informatique. L'objectif est de proposer une plateforme de covoiturage simple, claire et reactive, permettant aux utilisateurs de trouver et reserver des trajets en quelques actions.",
+    "Le projet met l'accent sur les interactions asynchrones: recherche de trajets en AJAX, reservation en AJAX avec mise a jour immediate des places disponibles, et gestion fluide des retours utilisateur sans rechargement de page.",
+    "L'architecture suit l'organisation classique Yii2 (controllers, models, views, config, web) avec une securisation cote serveur pour les actions sensibles (session, verification POST, droits selon le statut de connexion).",
+    "Une version deployee sur le serveur universitaire est disponible pour demonstration (acces VPN universitaire requis)."
+  ],
+  longDescriptionEn: [
+    "CERICar is a web project developed during the third year of Computer Science. Its goal is to provide a simple, clear, and responsive carpooling platform where users can quickly find and book trips.",
+    "The project focuses on asynchronous interactions: AJAX-based trip search, AJAX booking with immediate seat updates, and smooth user feedback without full page reloads.",
+    "The architecture follows the standard Yii2 structure (controllers, models, views, config, web) with server-side security for sensitive actions (session checks, POST validation, and access control based on authentication state).",
+    "A deployed version is available on the university server for demo purposes (university VPN access required)."
+  ],
+
+  featuresFr: [
+    "Recherche de trajets en AJAX (ville de depart, ville d'arrivee, nombre de voyageurs)",
+    "Reservation de trajet en AJAX avec mise a jour des places disponibles",
+    "Gestion des utilisateurs non connectes avec messages AJAX adaptes",
+    "Inscription et connexion classiques avec redirections",
+    "Parcours utilisateur distinct: visiteur vs utilisateur connecte",
+    "Actions sensibles securisees cote serveur (session, POST)"
+  ],
+  featuresEn: [
+    "AJAX trip search (departure city, arrival city, number of travelers)",
+    "AJAX trip booking with instant available-seat updates",
+    "Guest-user handling with dedicated AJAX feedback",
+    "Standard signup/login flows with redirects",
+    "Separate user journeys: visitor vs authenticated user",
+    "Server-side protection for sensitive actions (session, POST)"
+  ],
+
+  challengesFr: [
+    "Concevoir des flux AJAX robustes sans degrader l'experience utilisateur.",
+    "Synchroniser correctement le nombre de places lors des reservations concurrentes.",
+    "Distinguer proprement les comportements visiteurs/utilisateurs connectes.",
+    "Maintenir une structure Yii2 claire et testable sur l'ensemble des modules."
+  ],
+  challengesEn: [
+    "Designing robust AJAX workflows without degrading UX.",
+    "Keeping seat counts consistent during concurrent bookings.",
+    "Clearly separating guest and authenticated user behavior.",
+    "Maintaining a clean and testable Yii2 structure across modules."
+  ],
+
+  tech: ['PHP 7.4+', 'Yii2', 'Bootstrap 5', 'PostgreSQL', 'AJAX'],
+  image: 'https://github.com/user-attachments/assets/9028343d-81fb-4fe8-a524-1ddb7290f4c0',
+  galleryImages: [
+    'https://github.com/user-attachments/assets/06b4887b-2d42-4bd0-b702-6c0d55a67a99',
+    'https://github.com/user-attachments/assets/2d1be2f1-36e4-4a1b-80ac-a81cde80b259',
+    'https://github.com/user-attachments/assets/47a070aa-64b8-4257-8131-6dde1d958c6c',
+    'https://github.com/user-attachments/assets/604db67d-13b9-4be2-8bfd-f6ef5a4a967d',
+    'https://github.com/user-attachments/assets/00524030-34fb-4ff7-ab47-be467769877f',
+    'https://github.com/user-attachments/assets/f8e45d28-5da0-4d71-a4c4-e8b748e8c6ea',
+    'https://github.com/user-attachments/assets/5693228b-7779-40c5-9a50-653f96dc8f5f',
+    'https://github.com/user-attachments/assets/48b3fe7b-a4db-43fc-a63c-395e79d4b7d7',
+    'https://github.com/user-attachments/assets/db66ba11-c28b-459e-8095-5206aad86b96',
+    'https://github.com/user-attachments/assets/f120f624-5ef3-4fd7-8767-9ebdedacbc8c'
+  ],
+  liveUrl: 'https://pedago01c.univ-avignon.fr/~uapv2401806/projet/L3/mon_projet_yii/cericar/web/index.php?r=site%2Findex',
+  liveNoteFr: 'Acces via VPN universitaire requis.',
+  liveNoteEn: 'University VPN access required.',
+  githubUrl: 'https://github.com/malekghabi1607/cericar'
 },
 
 {
   id: 'withu',
-  title: 'With U',
-  titleEn: 'With U',
+  title: 'WithYou',
+  titleEn: 'WithYou',
 
   descriptionFr:
-    "Plateforme web collaborative permettant à plusieurs utilisateurs de regarder des vidéos YouTube ensemble en temps réel, tout en discutant via un chat intégré et en gérant des salons de visionnage.",
+    "Plateforme collaborative de visionnage synchronise permettant a plusieurs utilisateurs de regarder des videos ensemble et d'interagir en temps reel.",
   descriptionEn:
-    "Collaborative web platform allowing multiple users to watch YouTube videos together in real time, chat live, and manage shared viewing rooms.",
+    "Collaborative synchronized-watch platform enabling multiple users to watch videos together and interact in real time.",
 
   longDescriptionFr: [
-    "With U est une application web innovante développée dans le cadre d’un projet universitaire. Elle offre la possibilité à plusieurs utilisateurs de partager une même expérience de visionnage en temps réel, en synchronisant la lecture de vidéos YouTube et en intégrant un chat interactif.",
-    "Chaque utilisateur peut créer ou rejoindre un salon, choisir une vidéo, puis interagir avec les autres membres grâce à un système de messagerie instantanée. L’objectif est de recréer une expérience collective, fluide et sociale autour du contenu vidéo.",
-    "Le projet a été conçu selon le modèle en cascade, avec un cahier des charges complet, une phase d’analyse UML, et un développement progressif du back-end et du front-end. Les rôles ont été répartis entre quatre membres afin d’assurer une structure claire et une production collaborative.",
-    "With U met l’accent sur la synchronisation temps réel grâce à l’utilisation des WebSockets et d’une architecture moderne basée sur React et Node.js, garantissant une communication stable et des échanges instantanés."
+    "WithYou est une application web developpee dans le cadre du module Ingenierie Logicielle (Semestre 5). Elle permet de regarder la meme video de facon synchronisee, creer ou rejoindre des salons virtuels et discuter en direct via un chat temps reel.",
+    "Le projet propose aussi des interactions de groupe: gestion de playlists, permissions selon le role utilisateur, sondages simples et liste des salons publics.",
+    "L'architecture est separee en trois blocs: client React/Vite, API Laravel, et service realtime (Socket.io), avec un workflow de deploiement prevu pour Netlify/Render/Railway.",
+    "Statut actuel: MVP en cours de developpement, architecture complete validee, base de donnees fonctionnelle.",
+    "L'equipe projet est composee de Malek Ghabi, Meriem Takdjerad, Wissam Taleb, Lamia Taleb et Yanis Laftimi."
   ],
   longDescriptionEn: [
-    "With U is an innovative web application developed as part of a university project. It allows multiple users to share a real-time viewing experience by synchronizing YouTube video playback and integrating an interactive chat system.",
-    "Each user can create or join a room, choose a video, and interact with others via live chat. The goal is to recreate a social and collective experience around video content.",
-    "The project was developed using the waterfall model, including a full requirements document, UML analysis, and separate backend and frontend development phases. Tasks were divided among the team to ensure structure and consistency.",
-    "With U focuses on real-time synchronization using WebSockets and a modern architecture based on React and Node.js, ensuring stable communication and smooth interactions."
+    "WithYou is a web application built for the Software Engineering module (Semester 5). It lets users watch the same video in sync, create or join virtual rooms, and chat in real time.",
+    "The platform also supports group interactions: playlist handling, role-based permissions, simple polls, and a list of public rooms.",
+    "The architecture is split into three services: React/Vite client, Laravel API backend, and a realtime service (Socket.io), with deployment targets prepared for Netlify/Render/Railway.",
+    "Current status: MVP in progress, full architecture validated, and a working database layer.",
+    "The project team includes Malek Ghabi, Meriem Takdjerad, Wissam Taleb, Lamia Taleb, and Yanis Laftimi."
   ],
 
   featuresFr: [
-    "Visionnage YouTube synchronisé entre plusieurs utilisateurs",
-    "Chat en temps réel intégré dans chaque salon",
-    "Création, gestion et suppression de salons",
-    "Interface web responsive et ergonomique",
-    "Authentification sécurisée avec JWT et bcrypt",
-    "Base de données PostgreSQL pour la persistance des données",
-    "Développement en équipe selon le modèle en cascade"
+    "Inscription et authentification",
+    "Creation et gestion de salons",
+    "Lecture video synchronisee (YouTube IFrame API)",
+    "Chat en temps reel",
+    "Gestion des membres et permissions",
+    "Sondages et interactions simples",
+    "Liste des salons publics"
   ],
   featuresEn: [
-    "Real-time synchronized YouTube playback for multiple users",
-    "Integrated live chat within each viewing room",
-    "Room creation, management, and deletion",
-    "Responsive and user-friendly web interface",
-    "Secure authentication using JWT and bcrypt",
-    "PostgreSQL database for data persistence",
-    "Team-based development following the waterfall model"
+    "Signup and authentication",
+    "Room creation and management",
+    "Synchronized video playback (YouTube IFrame API)",
+    "Real-time chat",
+    "Member and permission management",
+    "Simple polls and interactions",
+    "Public rooms listing"
   ],
 
   challengesFr: [
-    "Mise en place d’une synchronisation vidéo stable via WebSockets.",
-    "Gestion du temps réel entre le chat, les vidéos et les utilisateurs connectés.",
-    "Organisation en équipe avec une répartition claire des rôles (front / back).",
-    "Utilisation de l’API YouTube IFrame et gestion des événements asynchrones.",
-    "Respect du modèle en cascade et du cahier des charges initial."
+    "Maintenir une synchronisation stable entre la video et tous les clients connectes.",
+    "Coordonner plusieurs canaux temps reel (chat, salons, permissions) sans conflit.",
+    "Integrer proprement YouTube IFrame API avec les evenements applicatifs.",
+    "Faire coexister Socket.io et Laravel Reverb selon les besoins du projet."
   ],
   challengesEn: [
-    "Implementing stable video synchronization using WebSockets.",
-    "Managing real-time interactions between chat, video, and connected users.",
-    "Working in a team with a clear division of roles (frontend / backend).",
-    "Using the YouTube IFrame API and handling asynchronous events.",
-    "Following the waterfall model and adhering to the original requirements document."
+    "Keeping synchronization stable across all connected clients.",
+    "Coordinating multiple realtime channels (chat, rooms, permissions) without conflicts.",
+    "Integrating YouTube IFrame API events cleanly into app state.",
+    "Combining Socket.io and Laravel Reverb in a maintainable architecture."
   ],
 
   tech: [
-    // --- Front-end ---
-    "HTML5",
-    "CSS3",
-    "JavaScript (ES6+)",
-    "React.js",
+    "React 19",
+    "React Router",
     "Vite",
-    "TypeScript (optionnel)",
-    "Tailwind CSS (ou Bootstrap)",
-    "Figma (UI/UX Design)",
-
-    // --- Back-end ---
+    "Tailwind CSS",
+    "Radix UI",
+    "Lucide React",
+    "Axios",
+    "Sonner",
+    "Supabase JS",
+    "PHP 8.2+",
+    "Laravel 12",
+    "JWT (php-open-source-saver/jwt-auth)",
+    "Laravel Reverb",
+    "Laravel Echo",
+    "Pusher JS",
+    "Socket.io",
+    "Supabase",
+    "PostgreSQL/MySQL",
     "Node.js",
-    "Express.js",
-    "Socket.io (WebSockets temps réel)",
-    "PostgreSQL",
-    "Prisma (ORM) ou Sequelize",
-    "JWT (authentification)",
-    "bcrypt (hachage des mots de passe)",
-    "REST API / WebSocket API",
-    "Docker (environnement conteneurisé, optionnel)",
-    "GitHub (versionning & CI/CD)",
-
-    // --- Intégrations externes ---
-    "YouTube IFrame API",
-    "reCAPTCHA (sécurité anti-bot)"
+    "npm",
+    "Composer",
+    "ESLint",
+    "PostCSS",
+    "Autoprefixer",
+    "PHPUnit",
+    "Mockery",
+    "GitHub Actions",
+    "Netlify",
+    "Render",
+    "Railway",
+    "Jira",
+    "Notion",
+    "Figma",
+    "YouTube IFrame API"
   ],
 
   image: '/images/projects/withu-cover.jpg',
@@ -906,8 +997,11 @@ export const projects: Project[] = [
     '/images/projects/withu-1.jpg',
     '/images/projects/withu-2.jpg',
     '/images/projects/withu-3.jpg'
+
+    
   ],
-  githubUrl: 'https://github.com/malekghabi1607/WithU',
+  liveUrl: 'https://with-you.website',
+  githubUrl: 'https://github.com/malekghabi1607/WithYou',
  
 },{
   id: 'portfolio-v2',
@@ -993,8 +1087,9 @@ export const projects: Project[] = [
     '/images/projects/portfolio-v2-2.jpg',
     '/images/projects/portfolio-v2-3.jpg'
   ],
-  githubUrl: 'https://github.com/malekghabi1607/portfolio',
-
+  githubUrl: 'https://github.com/malekghabi1607/Portfolio2',
+  liveUrl: 'https://malek-ghabi-portfolio.com',
+ 
 }
 
 

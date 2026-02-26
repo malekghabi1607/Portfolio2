@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Terraform">
+  <rect width="128" height="128" rx="20" fill="#7B42BC"/>
+  <path d="M28 38l26 15v30L28 68zM58 55l26 15v30L58 85zM58 28l26 15v22L58 50z" fill="#fff"/>
+</svg>

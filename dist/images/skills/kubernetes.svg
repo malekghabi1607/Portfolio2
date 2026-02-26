@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Kubernetes">
+  <rect width="128" height="128" rx="20" fill="#326CE5"/>
+  <circle cx="64" cy="64" r="28" fill="none" stroke="#fff" stroke-width="8"/>
+  <circle cx="64" cy="64" r="8" fill="#fff"/>
+  <path d="M64 28v16M64 84v16M28 64h16M84 64h16M39 39l11 11M78 78l11 11M89 39L78 50M50 78L39 89" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+</svg>

@@ -118,7 +118,7 @@ function CircleSkill({
 
       <span
         className={`text-sm font-semibold text-center transition-colors ${
-          isDark ? 'text-gray-300 group-hover/skill:text-orange-400' : 'text-gray-700 group-hover/skill:text-blue-900'
+          isDark ? 'text-gray-300 group-hover/skill:text-cyan-400' : 'text-gray-700 group-hover/skill:text-blue-900'
         }`}
       >
         {name}
@@ -131,14 +131,20 @@ function CircleSkill({
 interface HomePageProps {
   isDark: boolean;
   setIsDark: (isDark: boolean) => void;
+  language: 'fr' | 'en';
+  setLanguage: (language: 'fr' | 'en') => void;
 }
 
-export default function HomePage({ isDark, setIsDark }: HomePageProps) {
+export default function HomePage({ isDark, setIsDark, language, setLanguage }: HomePageProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState<'fr' | 'en'>('fr');
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error';
+    message: string;
+    debug?: string;
+    fallbackMailtoUrl?: string;
+  } | null>(null);
 
   const navigate = useNavigate();
 
@@ -248,6 +254,14 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
   };
 
   const t = translations[language];
+  const cvFile =
+    language === 'fr'
+      ? '/documents/CV_Malek_Ghabi_FR.pdf'
+      : '/documents/CV_Malek_Ghabi_EN.pdf';
+  const cvDownloadName =
+    language === 'fr'
+      ? 'CV_Malek_Ghabi_FR.pdf'
+      : 'CV_Malek_Ghabi_EN.pdf';
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -278,6 +292,10 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
         { name: 'Vue.js',      logo: '/images/skills/vuejs.svg',       level: 'intermediate' },
         { name: 'PHP',         logo: '/images/skills/php.svg',         level: 'advanced' },
         { name: 'Tailwind CSS',logo: '/images/skills/tailwind.svg',    level: 'intermediate' },
+        { name: 'Bootstrap 5', logo: '/images/skills/bootstrap.svg',   level: 'intermediate' },
+        { name: 'Chart.js',    logo: '/images/skills/chartjs.svg',     level: 'intermediate' },
+        { name: 'AJAX',        logo: '/images/skills/javascript.svg',  level: 'intermediate' },
+        { name: 'Vite',        logo: '/images/skills/vite.svg',        level: 'intermediate' },
         { name: 'Yii Framework', logo: '/images/skills/yii.svg',       level: 'beginner' },
       ],
     },
@@ -286,11 +304,19 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
       skills: [
         { name: 'Node.js', logo: '/images/skills/nodejs.svg',   level: 'intermediate' },
         { name: 'Python',  logo: '/images/skills/python.svg',   level: 'advanced' },
+        { name: 'Bash',    logo: '/images/skills/bash.svg',     level: 'intermediate' },
+        { name: 'Flask',   logo: '/images/skills/flask.svg',    level: 'intermediate' },
         { name: 'Java',    logo: '/images/skills/java.svg',     level: 'advanced' },
+        { name: 'JavaFX',  logo: '/images/skills/javafx.svg',   level: 'intermediate' },
         { name: 'Spring',  logo: '/images/skills/spring.svg',   level: 'intermediate' },
+        { name: 'Laravel', logo: '/images/skills/laravel.svg',  level: 'intermediate' },
+        { name: 'Socket.io', logo: '/images/skills/socketio.svg', level: 'intermediate' },
+        { name: 'JWT',     logo: '/images/skills/jwt.svg',      level: 'intermediate' },
         { name: 'C',       logo: '/images/skills/c.svg',        level: 'advanced' },
         { name: 'C++',     logo: '/images/skills/cplusplus.svg',level: 'advanced' },
         { name: 'R',       logo: '/images/skills/r.svg',        level: 'intermediate' },
+        { name: 'Matlab',  logo: '/images/skills/matlab.svg',   level: 'intermediate' },
+        { name: 'Arduino', logo: '/images/skills/arduino.svg',  level: 'intermediate' },
         { name: 'Julia',   logo: '/images/skills/julia.svg',    level: 'intermediate' },
       ],
     },
@@ -298,16 +324,44 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
       title: 'DevSecOps & Cloud',
       skills: [
         { name: 'Docker', logo: '/images/skills/docker.svg', level: 'intermediate' },
-        { name: 'GitLab', logo: '/images/skills/gitlab.svg', level: 'intermediate' },
+        { name: 'Kubernetes', logo: '/images/skills/kubernetes.svg', level: 'beginner' },
+        { name: 'Terraform', logo: '/images/skills/terraform.svg', level: 'beginner' },
+        { name: 'Ansible', logo: '/images/skills/ansible.svg', level: 'beginner' },
+        { name: 'GitLab CI', logo: '/images/skills/gitlab.svg', level: 'intermediate' },
+        { name: 'GitHub Actions', logo: '/images/skills/github.svg', level: 'intermediate' },
+        { name: 'Netlify', logo: '/images/skills/netlify.svg', level: 'intermediate' },
+        { name: 'Render', logo: '/images/skills/render.svg', level: 'intermediate' },
+        { name: 'Railway', logo: '/images/skills/railway.svg', level: 'intermediate' },
         { name: 'AWS',    logo: '/images/skills/aws.svg',    level: 'intermediate' },
       ],
     },
     {
       title: language === 'fr' ? 'Base de Données' : 'Databases',
       skills: [
+        { name: 'SQL',        logo: '/images/skills/sql.svg',        level: 'advanced' },
         { name: 'PostgreSQL', logo: '/images/skills/postgresql.svg', level: 'advanced' },
         { name: 'MySQL',      logo: '/images/skills/mysql.svg',      level: 'advanced' },
+        { name: 'SQLite',     logo: '/images/skills/sqlite.svg', level: 'intermediate' },
+        { name: 'MongoDB',    logo: '/images/skills/mongodb.svg', level: 'intermediate' },
+        { name: 'Redis',      logo: '/images/skills/redis.svg', level: 'intermediate' },
+        { name: 'Supabase',   logo: '/images/skills/supabase.svg', level: 'intermediate' },
         { name: 'Firebase',   logo: '/images/skills/firebase.svg',   level: 'intermediate' },
+      ],
+    },
+    {
+      title: language === 'fr' ? 'Réseaux' : 'Networks',
+      skills: [
+        { name: 'Cisco CCNA 1 & 2', logo: '/images/skills/cisco.svg', level: 'intermediate' },
+        { name: 'OSI Model', logo: '/images/skills/osi.svg', level: 'intermediate' },
+        { name: 'TCP/IP', logo: '/images/skills/tcpip.svg', level: 'intermediate' },
+        { name: 'VLAN', logo: '/images/skills/vlan.svg', level: 'intermediate' },
+        { name: 'Routing & Switching', logo: '/images/skills/routing.svg', level: 'intermediate' },
+        { name: 'DNS/DHCP', logo: '/images/skills/dns-dhcp.svg', level: 'intermediate' },
+        { name: 'Firewall', logo: '/images/skills/firewall.svg', level: 'intermediate' },
+        { name: 'VPN', logo: '/images/skills/vpn.svg', level: 'intermediate' },
+        { name: 'Network Security', logo: '/images/skills/network-security.svg', level: 'intermediate' },
+        { name: 'Packet Tracer', logo: '/images/skills/packet-tracer.svg', level: 'intermediate' },
+        { name: 'Wireshark', logo: '/images/skills/wireshark.svg', level: 'intermediate' },
       ],
     },
     {
@@ -315,8 +369,16 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
       skills: [
         { name: 'GitHub',  logo: '/images/skills/github.svg',  level: 'advanced' },
         { name: 'Git',     logo: '/images/skills/git.svg',     level: 'advanced' },
+        { name: 'Postman', logo: '/images/skills/postman.svg', level: 'intermediate' },
+        { name: 'Swagger', logo: '/images/skills/swagger.svg', level: 'intermediate' },
+        { name: 'Jira',    logo: '/images/skills/jira.svg',    level: 'intermediate' },
+        { name: 'Notion',  logo: '/images/skills/notion.svg',  level: 'intermediate' },
+        { name: 'npm',     logo: '/images/skills/npm.svg',     level: 'intermediate' },
+        { name: 'Composer',logo: '/images/skills/composer.svg',level: 'intermediate' },
+        { name: 'ESLint',  logo: '/images/skills/eslint.svg',  level: 'intermediate' },
         { name: 'Figma',   logo: '/images/skills/figma.svg',   level: 'intermediate' },
-        { name: 'VSCode',  logo: '/images/skills/vscode.svg',  level: 'advanced' },
+        { name: 'Pack Office', logo: '/images/skills/office.svg', level: 'advanced' },
+        { name: 'VS Code', logo: '/images/skills/vscode.svg',  level: 'advanced' },
         { name: 'Eclipse', logo: '/images/skills/eclipse.svg', level: 'intermediate' },
       ],
     },
@@ -325,9 +387,12 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
       skills: [
         { name: 'Linux',    logo: '/images/skills/linux.svg',    level: 'advanced' },
         { name: 'Windows',  logo: '/images/skills/windows.svg',  level: 'advanced' },
+        { name: 'VirtualBox', logo: '/images/skills/virtualbox.svg', level: 'intermediate' },
         { name: 'IntelliJ', logo: '/images/skills/intellij.svg', level: 'advanced' },
+        { name: 'PyCharm', logo: '/images/skills/pycharm.svg', level: 'intermediate' },
         { name: 'WebStorm', logo: '/images/skills/webstorm.svg', level: 'intermediate' },
         { name: 'PHPStorm', logo: '/images/skills/phpstorm.svg', level: 'intermediate' },
+        { name: 'Eclipse', logo: '/images/skills/eclipse.svg', level: 'intermediate' },
       ],
     },
   ];
@@ -354,6 +419,27 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
   ];
 
   const experiences = [
+    {
+      year: '2026',
+      title: language === 'fr' ? 'Stagiaire Développeuse Python' : 'Python Developer Intern',
+      company: 'CEA - Marcoule (INSTN, UEM) - Bagnols-sur-Cèze',
+      tasks: language === 'fr'
+        ? [
+            'Développement d\'une suite d\'outils Python pour l\'automatisation de documents (Word, Excel, PowerPoint, PDF, Outlook).',
+            'Création d\'une interface graphique (Tkinter / PySimpleGUI).',
+            'Implémentation d\'un code modulaire, maintenable et structuré (PEP8, gestion des erreurs, logs).',
+            'Participation à la mise en place d\'un système qualité documentaire (vérification, archivage, structuration des données).',
+            'Collaboration avec l\'équipe métier et gestion de versions avec Git.'
+          ]
+        : [
+            'Developed a Python tool suite for document automation (Word, Excel, PowerPoint, PDF, Outlook).',
+            'Built a graphical interface (Tkinter / PySimpleGUI).',
+            'Implemented modular, maintainable, and structured code (PEP8, error handling, logging).',
+            'Contributed to a document-quality workflow (verification, archiving, and data structuring).',
+            'Collaborated with business teams and used Git for version control.'
+          ],
+      status: language === 'fr' ? '(stage)' : '(internship)'
+    },
     {
       year: '2025-2026',
       title: language === 'fr' ? 'Caissière' : 'Cashier',
@@ -395,7 +481,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className={`text-4xl font-bold ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800 bg-clip-text text-transparent'}`} style={{fontFamily: 'Georgia, serif'}}>
+              <div className={`text-4xl font-bold ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500 bg-clip-text text-transparent' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800 bg-clip-text text-transparent'}`} style={{fontFamily: 'Georgia, serif'}}>
                 gm
               </div>
             </div>
@@ -405,20 +491,20 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                 <button
                   key={item}
                   onClick={() => scrollToSection(['home', 'about', 'competences', 'formation', 'experiences', 'projets', 'contact'][index])}
-                  className={`transition-all duration-300 font-medium ${isDark ? 'text-gray-300 hover:text-orange-400' : 'text-gray-700 hover:text-blue-900'}`}
+                  className={`transition-all duration-300 font-medium ${isDark ? 'text-gray-300 hover:text-cyan-400' : 'text-gray-700 hover:text-blue-900'}`}
                 >
                   {item}
                 </button>
               ))}
               <button
                 onClick={() => setIsDark(!isDark)}
-                className={`p-2 rounded-full transition-all duration-300 ${isDark ? 'bg-orange-500 hover:bg-orange-400' : 'bg-slate-900 hover:bg-slate-800'}`}
+                className={`p-2 rounded-full transition-all duration-300 ${isDark ? 'bg-cyan-500 hover:bg-cyan-400' : 'bg-slate-900 hover:bg-slate-800'}`}
               >
                 {isDark ? <Sun className="w-5 h-5 text-slate-900" /> : <Moon className="w-5 h-5 text-white" />}
               </button>
               <button
                 onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-white transition-all duration-300 font-medium text-sm shadow-md hover:shadow-lg ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-white transition-all duration-300 font-medium text-sm shadow-md hover:shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
               >
                 <Globe className="w-4 h-4" />
                 {language === 'fr' ? 'EN' : 'FR'}
@@ -428,7 +514,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
             <div className="flex items-center gap-4 md:hidden">
               <button
                 onClick={() => setIsDark(!isDark)}
-                className={`p-2 rounded-full transition-all duration-300 ${isDark ? 'bg-orange-500 hover:bg-orange-400' : 'bg-slate-900 hover:bg-slate-800'}`}
+                className={`p-2 rounded-full transition-all duration-300 ${isDark ? 'bg-cyan-500 hover:bg-cyan-400' : 'bg-slate-900 hover:bg-slate-800'}`}
               >
                 {isDark ? <Sun className="w-4 h-4 text-slate-900" /> : <Moon className="w-4 h-4 text-white" />}
               </button>
@@ -456,7 +542,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                 <button
                   key={item}
                   onClick={() => scrollToSection(['home', 'about', 'competences', 'formation', 'experiences', 'projets', 'contact'][index])}
-                  className={`block w-full text-left transition-all duration-300 py-2 font-medium ${isDark ? 'text-gray-300 hover:text-orange-400' : 'text-gray-700 hover:text-blue-900'}`}
+                  className={`block w-full text-left transition-all duration-300 py-2 font-medium ${isDark ? 'text-gray-300 hover:text-cyan-400' : 'text-gray-700 hover:text-blue-900'}`}
                 >
                   {item}
                 </button>
@@ -492,13 +578,13 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
           </div>
 
           <div className="mb-4 flex items-center justify-center gap-2 animate-fade-in">
-            <Sparkles className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} />
-            <span className={`text-sm font-medium uppercase tracking-wider ${isDark ? 'text-orange-400' : 'text-blue-900'}`}>{t.lookingFor}</span>
-            <Sparkles className={`w-5 h-5 ${isDark ? 'text-red-400' : 'text-slate-900'}`} />
+            <Sparkles className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
+            <span className={`text-sm font-medium uppercase tracking-wider ${isDark ? 'text-cyan-400' : 'text-blue-900'}`}>{t.lookingFor}</span>
+            <Sparkles className={`w-5 h-5 ${isDark ? 'text-blue-300' : 'text-slate-900'}`} />
           </div>
 
           <h1 className="text-6xl md:text-8xl font-bold mb-4 animate-fade-in">
-            <span className={`bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+            <span className={`bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
               Malek Ghabi
             </span>
           </h1>
@@ -509,7 +595,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
           <div className="flex flex-wrap justify-center gap-4 mb-8 text-gray-600 animate-fade-in">
             <div className={`flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm ${isDark ? 'bg-gray-800/60' : 'bg-white/60'}`}>
-              <MapPin className={`w-4 h-4 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} />
+              <MapPin className={`w-4 h-4 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
               <span>Avignon</span>
             </div>
             <div className={`flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm ${isDark ? 'bg-gray-800/60' : 'bg-white/60'}`}>
@@ -517,7 +603,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
               <span>+33 6 04 10 21 56</span>
             </div>
             <div className={`flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm ${isDark ? 'bg-gray-800/60' : 'bg-white/60'}`}>
-              <Mail className={`w-4 h-4 ${isDark ? 'text-red-400' : 'text-blue-900'}`} />
+              <Mail className={`w-4 h-4 ${isDark ? 'text-blue-300' : 'text-blue-900'}`} />
               <span>malekghabi.education@gmail.com</span>
             </div>
           </div>
@@ -525,14 +611,14 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
           <div className="flex justify-center space-x-4 mb-8 animate-fade-in">
             <a
               href="mailto:malekghabi.education@gmail.com"
-              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
+              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
               title="Email: malekghabi.education@gmail.com"
             >
               <Mail className="w-5 h-5" />
             </a>
             <a
               href="tel:+33604102156"
-              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500' : 'bg-gradient-to-r from-slate-800 to-blue-900 hover:from-slate-700 hover:to-blue-800'}`}
+              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'bg-gradient-to-r from-slate-800 to-blue-900 hover:from-slate-700 hover:to-blue-800'}`}
               title="Téléphone: +33 6 04 10 21 56"
             >
               <Phone className="w-5 h-5" />
@@ -541,7 +627,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
               href="https://github.com/malekghabi607"
               target="_blank"
               rel="noopener noreferrer"
-              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-500 hover:to-orange-600' : 'bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800'}`}
+              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-indigo-600 to-blue-700 hover:from-indigo-500 hover:to-blue-600' : 'bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800'}`}
               title="GitHub: malekghabi607"
             >
               <Github className="w-5 h-5" />
@@ -550,7 +636,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
               href="https://linkedin.com/in/malek-ghabi-3b3267a9"
               target="_blank"
               rel="noopener noreferrer"
-              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
+              className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
               title="LinkedIn: malek-ghabi-3b3267a9"
             >
               <Linkedin className="w-5 h-5" />
@@ -559,8 +645,8 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
             <a
-              href="/documents/CV_Malek_Ghabi.pdf"
-              download
+              href={cvFile}
+              download={cvDownloadName}
               className={`inline-flex items-center justify-center gap-2 px-8 py-4 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-xl animate-fade-in min-w-[280px] ${isDark ? 'bg-gradient-to-r from-orange-600 via-red-600 to-orange-700 hover:from-orange-500 hover:via-red-500 hover:to-orange-600' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800 hover:from-slate-800 hover:via-blue-800 hover:to-slate-700'}`}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -582,7 +668,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
       <section id="about" className="min-h-screen flex items-center justify-center px-4 py-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
             {t.about}
           </h2>
 
@@ -613,7 +699,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
           <div className="grid md:grid-cols-3 gap-8">
             <div className={`scroll-animate backdrop-blur-sm rounded-2xl p-8 border transition-all duration-300 shadow-lg hover:shadow-xl ${isDark ? 'bg-gray-800/60 border-gray-700 hover:border-orange-500/30' : 'bg-white/60 border-stone-200 hover:border-blue-900/30'}`}>
               <div className="flex items-center gap-4 mb-6">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`}>
+                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`}>
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -626,7 +712,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
             <div className={`scroll-animate backdrop-blur-sm rounded-2xl p-8 border transition-all duration-300 shadow-lg hover:shadow-xl ${isDark ? 'bg-gray-800/60 border-gray-700 hover:border-orange-500/30' : 'bg-white/60 border-stone-200 hover:border-blue-900/30'}`} style={{transitionDelay: '0.1s'}}>
               <div className="flex items-center gap-4 mb-6">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg ${isDark ? 'bg-gradient-to-r from-amber-600 to-orange-600' : 'bg-gradient-to-r from-blue-900 to-slate-900'}`}>
+                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg ${isDark ? 'bg-gradient-to-r from-blue-600 to-indigo-600' : 'bg-gradient-to-r from-blue-900 to-slate-900'}`}>
                   <GraduationCap className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -639,7 +725,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
             <div className={`scroll-animate backdrop-blur-sm rounded-2xl p-8 border transition-all duration-300 shadow-lg hover:shadow-xl ${isDark ? 'bg-gray-800/60 border-gray-700 hover:border-orange-500/30' : 'bg-white/60 border-stone-200 hover:border-blue-900/30'}`} style={{transitionDelay: '0.2s'}}>
               <div className="flex items-center gap-4 mb-6">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg ${isDark ? 'bg-gradient-to-r from-red-600 to-orange-700' : 'bg-gradient-to-r from-blue-900 to-slate-800'}`}>
+                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg ${isDark ? 'bg-gradient-to-r from-indigo-600 to-blue-700' : 'bg-gradient-to-r from-blue-900 to-slate-800'}`}>
                   <Briefcase className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -661,7 +747,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                     <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Natif</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '100%'}}></div>
+                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '100%'}}></div>
                   </div>
                 </div>
                 <div>
@@ -670,7 +756,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                     <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Natif</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '100%'}}></div>
+                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '100%'}}></div>
                   </div>
                 </div>
                 <div>
@@ -679,7 +765,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                     <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>B2</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '75%'}}></div>
+                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '75%'}}></div>
                   </div>
                 </div>
                 <div>
@@ -688,17 +774,17 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                     <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>B2</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '75%'}}></div>
+                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '75%'}}></div>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className={`scroll-animate backdrop-blur-sm p-6 rounded-xl border transition-all duration-300 shadow-md hover:shadow-lg ${isDark ? 'bg-gray-800/60 border-gray-700 hover:border-orange-500/30' : 'bg-white/60 border-stone-200 hover:border-blue-900/30'}`} style={{transitionDelay: '0.1s'}}>
-              <h3 className={`text-2xl font-bold bg-clip-text text-transparent mb-6 ${isDark ? 'bg-gradient-to-r from-orange-400 to-red-500' : 'bg-gradient-to-r from-blue-900 to-slate-900'}`}>{t.personalSkills}</h3>
+              <h3 className={`text-2xl font-bold bg-clip-text text-transparent mb-6 ${isDark ? 'bg-gradient-to-r from-cyan-400 to-blue-500' : 'bg-gradient-to-r from-blue-900 to-slate-900'}`}>{t.personalSkills}</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-3 group">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`}>
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`}>
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
@@ -706,7 +792,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                   <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.teamwork}</span>
                 </div>
                 <div className="flex items-center gap-3 group">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${isDark ? 'bg-gradient-to-r from-amber-600 to-orange-600' : 'bg-gradient-to-r from-blue-900 to-slate-900'}`}>
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${isDark ? 'bg-gradient-to-r from-blue-600 to-indigo-600' : 'bg-gradient-to-r from-blue-900 to-slate-900'}`}>
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
@@ -714,7 +800,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                   <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.autonomy}</span>
                 </div>
                 <div className="flex items-center gap-3 group">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${isDark ? 'bg-gradient-to-r from-red-600 to-orange-700' : 'bg-gradient-to-r from-slate-800 to-blue-900'}`}>
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${isDark ? 'bg-gradient-to-r from-indigo-600 to-blue-700' : 'bg-gradient-to-r from-slate-800 to-blue-900'}`}>
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
@@ -725,34 +811,34 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
             </div>
 
             <div className={`scroll-animate backdrop-blur-sm p-6 rounded-xl border transition-all duration-300 shadow-md hover:shadow-lg ${isDark ? 'bg-gray-800/60 border-gray-700 hover:border-orange-500/30' : 'bg-white/60 border-stone-200 hover:border-blue-900/30'}`} style={{transitionDelay: '0.2s'}}>
-              <h3 className={`text-2xl font-bold bg-clip-text text-transparent mb-6 ${isDark ? 'bg-gradient-to-r from-red-400 to-orange-500' : 'bg-gradient-to-r from-blue-900 to-slate-800'}`}>{t.interests}</h3>
+              <h3 className={`text-2xl font-bold bg-clip-text text-transparent mb-6 ${isDark ? 'bg-gradient-to-r from-blue-400 to-cyan-500' : 'bg-gradient-to-r from-blue-900 to-slate-800'}`}>{t.interests}</h3>
               <div className="space-y-3">
                 <div className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${isDark ? 'bg-gray-700/50 hover:bg-gray-700' : 'bg-white/50 hover:bg-white'}`}>
-                  <svg className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.sport}</span>
                 </div>
                 <div className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${isDark ? 'bg-gray-700/50 hover:bg-gray-700' : 'bg-white/50 hover:bg-white'}`}>
-                  <svg className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                   </svg>
                   <span className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.music}</span>
                 </div>
                 <div className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${isDark ? 'bg-gray-700/50 hover:bg-gray-700' : 'bg-white/50 hover:bg-white'}`}>
-                  <svg className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                   </svg>
                   <span className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.design}</span>
                 </div>
                 <div className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${isDark ? 'bg-gray-700/50 hover:bg-gray-700' : 'bg-white/50 hover:bg-white'}`}>
-                  <svg className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.travel}</span>
                 </div>
                 <div className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${isDark ? 'bg-gray-700/50 hover:bg-gray-700' : 'bg-white/50 hover:bg-white'}`}>
-                  <svg className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
                   <span className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.podcast}</span>
@@ -765,7 +851,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
       <section id="competences" className="min-h-screen flex items-center justify-center px-4 py-20">
         <div className="max-w-7xl mx-auto w-full">
-          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
             {t.technicalSkills}
           </h2>
 
@@ -801,7 +887,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
       <section id="formation" className="min-h-screen flex items-center justify-center px-4 py-20">
         <div className="max-w-6xl mx-auto w-full">
-          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
             {t.education}
           </h2>
 
@@ -815,17 +901,17 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                   className="scroll-animate relative pl-20"
                   style={{transitionDelay: `${index * 0.1}s`}}
                 >
-                  <div className={`absolute left-0 w-16 h-16 rounded-full flex items-center justify-center shadow-xl ${isDark ? 'bg-gradient-to-br from-orange-600 to-red-600' : 'bg-gradient-to-br from-slate-900 to-blue-900'}`}>
+                  <div className={`absolute left-0 w-16 h-16 rounded-full flex items-center justify-center shadow-xl ${isDark ? 'bg-gradient-to-br from-cyan-600 to-blue-600' : 'bg-gradient-to-br from-slate-900 to-blue-900'}`}>
                     <GraduationCap className="w-8 h-8 text-white" />
                   </div>
 
                   <div className={`backdrop-blur-sm rounded-2xl p-8 border transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-2xl ${isDark ? 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-gray-700 hover:border-orange-500' : 'bg-gradient-to-br from-white/80 to-blue-50/80 border-stone-200 hover:border-blue-900'}`}>
                     <div className="flex items-center gap-3 mb-4">
-                      <span className={`px-4 py-2 rounded-full text-sm font-bold shadow-md ${isDark ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' : 'bg-gradient-to-r from-slate-900 to-blue-900 text-white'}`}>
+                      <span className={`px-4 py-2 rounded-full text-sm font-bold shadow-md ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' : 'bg-gradient-to-r from-slate-900 to-blue-900 text-white'}`}>
                         {edu.year}
                       </span>
                       {edu.status && (
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-orange-900/50 text-orange-300 border border-orange-700' : 'bg-blue-100 text-blue-800 border border-blue-300'}`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-cyan-900/40 text-cyan-300 border border-cyan-700' : 'bg-blue-100 text-blue-800 border border-blue-300'}`}>
                           {edu.status}
                         </span>
                       )}
@@ -836,7 +922,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                     </h3>
 
                     <div className="flex items-center gap-2">
-                      <svg className={`w-5 h-5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                       <p className={`text-lg font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{edu.school}</p>
@@ -851,7 +937,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
       <section id="experiences" className="min-h-screen flex items-center justify-center px-4 py-20">
         <div className="max-w-6xl mx-auto w-full">
-          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
             {t.experience}
           </h2>
 
@@ -871,11 +957,11 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                     <h3 className={`text-xl font-bold mb-1 ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
                       {exp.title} {exp.status && <span className={`text-base font-normal ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{exp.status}</span>}
                     </h3>
-                    <p className={`mb-3 font-medium ${isDark ? 'text-orange-400' : 'text-blue-900'}`}>{exp.company}</p>
+                    <p className={`mb-3 font-medium ${isDark ? 'text-cyan-400' : 'text-blue-900'}`}>{exp.company}</p>
                     <ul className="space-y-2">
                       {exp.tasks.map((task, taskIndex) => (
                         <li key={taskIndex} className={`flex items-start gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                          <span className={`mt-1.5 ${isDark ? 'text-orange-400' : 'text-blue-900'}`}>•</span>
+                          <span className={`mt-1.5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`}>•</span>
                           <span>{task}</span>
                         </li>
                       ))}
@@ -890,7 +976,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
       <section id="projets" className="min-h-screen flex items-center justify-center px-4 py-20">
         <div className="max-w-6xl mx-auto w-full">
-          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
             {t.projects}
           </h2>
 
@@ -916,7 +1002,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                     {project.tech.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className={`px-3 py-1 text-white rounded-full text-sm font-medium shadow-sm ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`}
+                        className={`px-3 py-1 text-white rounded-full text-sm font-medium shadow-sm ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`}
                       >
                         {tech}
                       </span>
@@ -934,7 +1020,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
 
       <section id="contact" className="min-h-screen flex items-center justify-center px-4 py-20">
         <div className="max-w-2xl mx-auto w-full">
-          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-8 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-8 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
             {t.contactMe}
           </h2>
           <p className={`scroll-animate text-center mb-12 text-lg ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -948,7 +1034,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                 className="group"
                 title="malekghabi.education@gmail.com"
               >
-                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}>
+                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}>
                   <Mail className="w-6 h-6" />
                 </div>
               </a>
@@ -957,7 +1043,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                 className="group"
                 title="+33 6 04 10 21 56"
               >
-                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500' : 'bg-gradient-to-r from-slate-800 to-blue-900 hover:from-slate-700 hover:to-blue-800'}`}>
+                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'bg-gradient-to-r from-slate-800 to-blue-900 hover:from-slate-700 hover:to-blue-800'}`}>
                   <Phone className="w-6 h-6" />
                 </div>
               </a>
@@ -968,7 +1054,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                 className="group"
                 title="GitHub: malekghabi607"
               >
-                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-500 hover:to-orange-600' : 'bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800'}`}>
+                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-indigo-600 to-blue-700 hover:from-indigo-500 hover:to-blue-600' : 'bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800'}`}>
                   <Github className="w-6 h-6" />
                 </div>
               </a>
@@ -979,7 +1065,7 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
                 className="group"
                 title="LinkedIn: malek-ghabi-3b3267a9"
               >
-                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}>
+                <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}>
                   <Linkedin className="w-6 h-6" />
                 </div>
               </a>
@@ -996,10 +1082,24 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
               const result = await sendContactEmail(formData);
 
               if (result.success) {
-                setSubmitStatus({ type: 'success', message: t.successMessage });
+                const fallbackMessage =
+                  language === 'fr'
+                    ? 'EmailJS indisponible. Ouverture de votre application mail pour envoyer le message.'
+                    : 'EmailJS unavailable. Opening your mail app to send the message.';
+                setSubmitStatus({
+                  type: 'success',
+                  message: result.fallbackUsed ? fallbackMessage : t.successMessage,
+                  debug: result.debug,
+                  fallbackMailtoUrl: result.fallbackMailtoUrl
+                });
                 setFormData({ name: '', email: '', message: '' });
               } else {
-                setSubmitStatus({ type: 'error', message: result.error || t.errorMessage });
+                setSubmitStatus({
+                  type: 'error',
+                  message: result.error || t.errorMessage,
+                  debug: result.debug,
+                  fallbackMailtoUrl: result.fallbackMailtoUrl
+                });
               }
 
               setIsSubmitting(false);
@@ -1008,6 +1108,24 @@ export default function HomePage({ isDark, setIsDark }: HomePageProps) {
             {submitStatus && (
               <div className={`p-4 rounded-lg ${submitStatus.type === 'success' ? (isDark ? 'bg-green-900/50 text-green-200 border border-green-700' : 'bg-green-100 text-green-800 border border-green-300') : (isDark ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-red-100 text-red-800 border border-red-300')}`}>
                 {submitStatus.message}
+                {submitStatus.debug && (
+                  <p className={`mt-2 text-xs break-all ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    {language === 'fr' ? 'Details techniques: ' : 'Technical details: '}
+                    {submitStatus.debug}
+                  </p>
+                )}
+                {submitStatus.type === 'error' && submitStatus.fallbackMailtoUrl && (
+                  <a
+                    href={submitStatus.fallbackMailtoUrl}
+                    className={`inline-flex mt-3 px-3 py-2 rounded-md text-sm font-medium ${
+                      isDark
+                        ? 'bg-amber-600 text-white hover:bg-amber-500'
+                        : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+                    }`}
+                  >
+                    {language === 'fr' ? 'Envoyer via mon app mail' : 'Send via my mail app'}
+                  </a>
+                )}
               </div>
             )}
 

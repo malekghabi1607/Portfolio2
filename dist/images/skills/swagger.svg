@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Swagger">
+  <rect width="128" height="128" rx="20" fill="#85EA2D"/>
+  <path d="M44 40h40M44 56h30M44 72h24M44 88h16" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="96" cy="40" r="8" fill="#111"/>
+</svg>

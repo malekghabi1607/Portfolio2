@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Redis">
+  <rect width="128" height="128" rx="20" fill="#A41E11"/>
+  <path d="M24 52l40-14 40 14-40 14z" fill="#fff" fill-opacity="0.9"/>
+  <path d="M24 70l40 14 40-14" fill="none" stroke="#fff" stroke-width="6"/>
+  <path d="M24 86l40 14 40-14" fill="none" stroke="#fff" stroke-width="6"/>
+</svg>

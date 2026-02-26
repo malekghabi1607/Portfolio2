@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Wireshark">
+  <rect width="128" height="128" rx="20" fill="#2563EB"/>
+  <path d="M20 80h88l-22 20H42z" fill="#DBEAFE"/>
+  <path d="M36 48h56v28H36z" fill="#93C5FD"/>
+  <path d="M64 32l8 16H56z" fill="#DBEAFE"/>
+</svg>
