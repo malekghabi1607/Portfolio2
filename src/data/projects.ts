@@ -92,6 +92,150 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/malekghabi1607/EasyMonitor'
   },
 
+
+
+  {
+    id: 'cadi-web',
+    title: 'CADI Web',
+    titleEn: 'CADI Web',
+
+    descriptionFr:
+      "Application web interne d’automatisation métier développée pour centraliser et simplifier les traitements liés aux formations INSTN/CEA.",
+    descriptionEn:
+      "Internal business automation web application designed to centralize and simplify training-related processes for INSTN/CEA.",
+
+    longDescriptionFr: [
+      "CADI Web est une application web interne développée dans un contexte professionnel au CEA Marcoule. Elle vise à moderniser les traitements liés aux formations INSTN en remplaçant l’utilisation manuelle de scripts par une interface web claire et accessible.",
+      "Le projet permet de traiter des fichiers Excel complexes, d’exploiter des exports IRIS, de générer des bilans et documents de synthèse, tout en améliorant l’ergonomie des outils utilisés par les équipes métier.",
+      "L’application repose sur une architecture full-stack avec un backend Python/FastAPI, un frontend React et une interface moderne construite avec Tailwind CSS."
+    ],
+
+    longDescriptionEn: [
+      "CADI Web is an internal web application developed in a professional context at CEA Marcoule. It aims to modernize training-related processes for INSTN by replacing manual script execution with a clear and accessible web interface.",
+      "The project handles complex Excel files, IRIS exports, report generation and business document automation while improving the usability of internal tools.",
+      "The application is based on a full-stack architecture using a Python/FastAPI backend, a React frontend and a modern Tailwind CSS interface."
+    ],
+
+    featuresFr: [
+      "Interface web pour centraliser les traitements métier",
+      "Automatisation du traitement de fichiers Excel complexes",
+      "Exploitation et structuration d’exports IRIS",
+      "Génération de bilans et documents de synthèse",
+      "Maquettes, diagrammes UML et documentation technique",
+      "Amélioration de l’ergonomie des outils internes"
+    ],
+
+    featuresEn: [
+      "Web interface to centralize business processes",
+      "Automated processing of complex Excel files",
+      "IRIS export parsing and structuring",
+      "Generation of reports and summary documents",
+      "Mockups, UML diagrams and technical documentation",
+      "Improved usability of internal tools"
+    ],
+
+    challengesFr: [
+      "Comprendre les besoins métier liés aux formations INSTN/CEA",
+      "Transformer des traitements Python existants en application web utilisable",
+      "Structurer proprement les données issues de fichiers Excel et d’exports IRIS",
+      "Concevoir une interface simple pour des utilisateurs non techniques"
+    ],
+
+    challengesEn: [
+      "Understanding business needs related to INSTN/CEA training processes",
+      "Transforming existing Python scripts into a usable web application",
+      "Structuring data from Excel files and IRIS exports",
+      "Designing a simple interface for non-technical users"
+    ],
+
+    tech: ['Python', 'FastAPI', 'React', 'Tailwind CSS', 'Excel', 'IRIS', 'UML'],
+    image: '/images/projects/cadi-web.jpg',
+    galleryImages: [
+      '/images/projects/cadi-web1.jpg',
+      '/images/projects/cadi-web2.jpg'
+    ],
+  },
+
+  {
+    id: 'aura-student-life-os',
+    title: 'Aura Student Life OS',
+    titleEn: 'Aura Student Life OS',
+
+    descriptionFr:
+      "Plateforme SaaS full-stack dédiée à l’organisation de la vie étudiante : finances, objectifs, planning, habitudes, sport et assistant IA.",
+    descriptionEn:
+      "Full-stack SaaS platform designed to organize student life: finances, goals, planning, habits, sport tracking and AI assistant.",
+
+    longDescriptionFr: [
+      "Aura Student Life OS est une plateforme SaaS personnelle pensée pour centraliser plusieurs aspects de la vie étudiante dans une seule application moderne.",
+      "Le projet regroupe des modules de gestion financière, objectifs, planning, habitudes, sport, notes et assistant IA afin d’aider l’utilisateur à mieux organiser son quotidien.",
+      "L’application repose sur une architecture full-stack avec un frontend React/Vite, un backend Spring Boot, une base PostgreSQL et un environnement Docker."
+    ],
+
+    longDescriptionEn: [
+      "Aura Student Life OS is a personal SaaS platform designed to centralize several aspects of student life into one modern application.",
+      "The project includes finance management, goals, planning, habits, sport tracking, notes and an AI assistant to help users better organize their daily life.",
+      "The application is built on a full-stack architecture with a React/Vite frontend, Spring Boot backend, PostgreSQL database and Docker environment."
+    ],
+
+    featuresFr: [
+      "Dashboard global avec indicateurs personnels",
+      "Gestion des finances personnelles et statistiques",
+      "Suivi des objectifs, habitudes, sport et planning",
+      "Assistant IA connecté à l’API backend",
+      "Authentification sécurisée avec JWT",
+      "API REST documentée avec Swagger/OpenAPI",
+      "Exports Excel/PDF",
+      "Architecture Dockerisée avec PostgreSQL"
+    ],
+
+    featuresEn: [
+      "Global dashboard with personal indicators",
+      "Personal finance tracking and statistics",
+      "Goals, habits, sport and planning management",
+      "AI assistant connected to the backend API",
+      "Secure JWT authentication",
+      "REST API documented with Swagger/OpenAPI",
+      "Excel/PDF exports",
+      "Dockerized architecture with PostgreSQL"
+    ],
+
+    challengesFr: [
+      "Structurer une application SaaS modulaire avec plusieurs domaines métier",
+      "Sécuriser les accès utilisateurs avec JWT",
+      "Créer des tableaux de bord lisibles et interactifs",
+      "Organiser proprement l’architecture backend Spring Boot",
+      "Intégrer plusieurs modules dans une interface cohérente"
+    ],
+
+    challengesEn: [
+      "Structuring a modular SaaS application with several business domains",
+      "Securing user access with JWT",
+      "Creating clear and interactive dashboards",
+      "Organizing a clean Spring Boot backend architecture",
+      "Integrating multiple modules into a consistent interface"
+    ],
+
+    tech: [
+      'React',
+      'Vite',
+      'Spring Boot',
+      'Spring Security',
+      'JWT',
+      'PostgreSQL',
+      'Docker',
+      'Swagger/OpenAPI',
+      'Recharts'
+    ],
+    image: '/images/projects/aura-student-life-os.jpg',
+    galleryImages: [
+      '/images/projects/aura1.jpg',
+      '/images/projects/aura2.jpg'
+    ],
+    githubUrl: 'https://github.com/malekghabi1607/aura-student-life-os'
+  },
+
+
   {
     id: 'luna-perla',
     title: 'Luna Perla',

@@ -19,41 +19,25 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     year: '2026',
-    titleFr: 'Stagiaire Développeuse Python',
-    titleEn: 'Python Developer Intern',
-    company: 'CEA - Marcoule (INSTN, UEM) - Bagnols-sur-Cèze',
+    titleFr: 'Stagiaire Développeuse Full-Stack',
+    titleEn: 'Full-Stack Developer Intern',
+    company: 'CEA Marcoule (INSTN / UEM) - Bagnols-sur-Cèze',
     tasksFr: [
-      'Développement d\'une suite d\'outils Python pour l\'automatisation de documents (Word, Excel, PowerPoint, PDF, Outlook).',
-      'Création d\'une interface graphique (Tkinter / PySimpleGUI).',
-      'Implémentation d\'un code modulaire, maintenable et structuré (PEP8, gestion des erreurs, logs).',
-      'Participation à la mise en place d\'un système qualité documentaire (vérification, archivage, structuration des données).',
-      'Collaboration avec l\'équipe métier et gestion de versions avec Git.'
+      'Conception et développement des interfaces front-end et back-end de l’application CADI Web.',
+      'Développement d’applications et d’outils Python destinés à automatiser les traitements de données et les processus documentaires.',
+      'Développement de fonctionnalités web pour le traitement de fichiers Excel, d’exports IRIS et la génération automatisée de documents.',
+      'Participation à la conception technique : maquettes, diagrammes UML, architecture applicative et documentation.',
+      'Application des bonnes pratiques de développement logiciel (architecture modulaire, gestion des erreurs, qualité du code) et utilisation de Git pour le suivi des développements.'
     ],
     tasksEn: [
-      'Developed a Python tool suite for document automation (Word, Excel, PowerPoint, PDF, Outlook).',
-      'Built a graphical interface (Tkinter / PySimpleGUI).',
-      'Implemented modular, maintainable, and structured code (PEP8, error handling, logging).',
-      'Contributed to a document-quality workflow (verification, archiving, and data structuring).',
-      'Collaborated with business teams and used Git for version control.'
+      'Designed and developed both front-end and back-end interfaces of the CADI Web application.',
+      'Developed Python applications and tools to automate data processing and document workflows.',
+      'Built web features for Excel file processing, IRIS exports and automated document generation.',
+      'Contributed to technical design through mockups, UML diagrams, application architecture and documentation.',
+      'Applied software engineering best practices (modular architecture, error handling, code quality) and used Git for version control.'
     ],
     statusFr: '(stage)',
     statusEn: '(internship)'
-  },
-  {
-    year: '2025-2026',
-    titleFr: 'Caissière',
-    titleEn: 'Cashier',
-    company: 'B&M - Sorgues',
-    tasksFr: [
-      'Accueil clients et gestion des encaissements.',
-      'Mise en rayon et suivi des stocks.'
-    ],
-    tasksEn: [
-      'Customer reception and cash management.',
-      'Shelving and inventory tracking.'
-    ],
-    statusFr: '(en cours)',
-    statusEn: '(ongoing)'
   },
   {
     year: '2025',
