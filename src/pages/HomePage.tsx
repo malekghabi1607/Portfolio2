@@ -5,6 +5,7 @@ import { sendContactEmail } from '../utils/emailService';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import BackgroundAnimation from '../components/BackgroundAnimation';
 import { projects as portfolioProjects } from '../data/projects';
+import { experiences as portfolioExperiences } from '../data/experiences';
 
 /* ===== Types & helpers pour SKILLS (nouveau) ===== */
 type Level = 'beginner' | 'intermediate' | 'advanced' | 'expert';
@@ -418,61 +419,13 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
     }
   ];
 
-  const experiences = [
-    {
-      year: '2026',
-      title: language === 'fr' ? 'Stagiaire Développeuse Python' : 'Python Developer Intern',
-      company: 'CEA - Marcoule (INSTN, UEM) - Bagnols-sur-Cèze',
-      tasks: language === 'fr'
-        ? [
-            'Développement d\'une suite d\'outils Python pour l\'automatisation de documents (Word, Excel, PowerPoint, PDF, Outlook).',
-            'Création d\'une interface graphique (Tkinter / PySimpleGUI).',
-            'Implémentation d\'un code modulaire, maintenable et structuré (PEP8, gestion des erreurs, logs).',
-            'Participation à la mise en place d\'un système qualité documentaire (vérification, archivage, structuration des données).',
-            'Collaboration avec l\'équipe métier et gestion de versions avec Git.'
-          ]
-        : [
-            'Developed a Python tool suite for document automation (Word, Excel, PowerPoint, PDF, Outlook).',
-            'Built a graphical interface (Tkinter / PySimpleGUI).',
-            'Implemented modular, maintainable, and structured code (PEP8, error handling, logging).',
-            'Contributed to a document-quality workflow (verification, archiving, and data structuring).',
-            'Collaborated with business teams and used Git for version control.'
-          ],
-      status: language === 'fr' ? '(stage)' : '(internship)'
-    },
-    {
-      year: '2025-2026',
-      title: language === 'fr' ? 'Caissière' : 'Cashier',
-      company: 'B&M - Sorgues',
-      tasks: language === 'fr' ? ['Accueil clients et gestion des encaissements.', 'Mise en rayon et suivi des stocks.'] : ['Customer reception and cash management.', 'Shelving and inventory tracking.'],
-      status: language === 'fr' ? '(en cours)' : '(ongoing)'
-    },
-    {
-      year: '2025',
-      title: language === 'fr' ? 'Animatrice' : 'Activity Leader',
-      company: 'MJC - Annemasse',
-      tasks: language === 'fr' ? ['Encadrement et animation d\'activités pour enfants.', 'Développement du sens de l\'organisation et du travail en équipe.'] : ['Supervision and animation of children\'s activities.', 'Development of organizational and teamwork skills.'],
-      status: language === 'fr' ? '(job d\'été)' : '(summer job)'
-    },
-    {
-      year: '2023-2024',
-      title: language === 'fr' ? 'Gestionnaire d\'exploitation' : 'Operations Manager',
-      company: language === 'fr' ? 'CERP - Laboratoire pharmaceutique' : 'CERP - Pharmaceutical Laboratory',
-      tasks: language === 'fr' ? ['Vérification des lots et péremptions.', 'Réception, gestion du stock et préparation des médicaments.'] : ['Batch and expiration verification.', 'Reception, inventory management and drug preparation.']
-    },
-    {
-      year: '2022',
-      title: language === 'fr' ? 'Stagiaire Architecte' : 'Architecture Intern',
-      company: 'Cabinet Gilles - Carpentras',
-      tasks: language === 'fr' ? ['Participation aux relevés de terrain et à la conception des plans.', 'Assistance à la préparation de dossiers de permis de construire.'] : ['Participation in field surveys and plan design.', 'Assistance in preparing building permit applications.']
-    },
-    {
-      year: '2021',
-      title: language === 'fr' ? 'Stagiaire Géomètre Expert' : 'Land Surveyor Intern',
-      company: 'Cabinet Grimont - Carpentras',
-      tasks: language === 'fr' ? ['Aide au levé topographique et au bornage de terrains.', 'Traitement de données sur logiciel de géomatique.'] : ['Assistance with topographic surveys and land demarcation.', 'Data processing on geomatics software.']
-    }
-  ];
+  const experiences = portfolioExperiences.map((experience) => ({
+    year: experience.year,
+    title: language === 'fr' ? experience.titleFr : experience.titleEn,
+    company: experience.company,
+    tasks: language === 'fr' ? experience.tasksFr : experience.tasksEn,
+    status: language === 'fr' ? experience.statusFr : experience.statusEn,
+  }));
 
   return (
     <div className={`min-h-screen transition-colors duration-500 relative ${isDark ? 'bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-gray-100' : 'bg-gradient-to-br from-stone-50 via-amber-50/30 to-white text-gray-900'}`}>
