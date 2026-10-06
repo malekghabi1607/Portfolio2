@@ -1,0 +1,62 @@
+% Style commun aux CV FR et EN (reproduit le modèle visuel d'origine)
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage[letterspace=50]{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\geometry{a4paper,left=0.87cm,right=0.87cm,top=0.5cm,bottom=0.4cm}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\definecolor{mainblue}{HTML}{1A5DAB}
+\definecolor{darktext}{HTML}{1A1A1A}
+\definecolor{muted}{HTML}{6B6B6B}
+
+\newcommand{\bluelink}[2]{\href{#1}{\textcolor{mainblue}{\textbf{#2}}}}
+\newcommand{\sep}{\quad|\quad}
+
+% Titre de section : bleu, gras, majuscules, filet fin bleu
+\newcommand{\cvsection}[1]{%
+  \par\vspace{4pt}%
+  {\fontsize{10.5}{12}\selectfont\bfseries\color{mainblue}\textls[60]{#1}}\par\vspace{2pt}%
+  {\color{mainblue}\hrule height 0.5pt}\par\vspace{2pt}%
+}
+
+% Ligne titre (gras) à gauche, info grise à droite
+\newcommand{\entry}[2]{%
+  \par\noindent\textbf{#1}\hfill{\color{muted}#2}\par
+}
+
+% Puce tiret
+\newcommand{\dash}[1]{\par\noindent\hangindent=1.4em\hangafter=1 \makebox[1.4em][l]{\,--}#1\par}
+
+\newcommand{\techsep}{\enspace\textbullet\enspace}
+
+% En-tête : photo ronde + nom, sous-titre, coordonnées, liens
+\newcommand{\cvheader}[1]{%
+  \noindent
+  \begin{minipage}[c]{0.215\linewidth}
+    \begin{tikzpicture}
+      \begin{scope}
+        \clip (0,0) circle (1.52cm);
+        \node at (0,-0.5) {\includegraphics[width=3.3cm]{../public/images/photo.jpg}};
+      \end{scope}
+      \draw[mainblue,line width=0.5pt] (0,0) circle (1.52cm);
+    \end{tikzpicture}
+  \end{minipage}\hspace{0.6cm}%
+  \begin{minipage}[c]{0.72\linewidth}
+    {\fontsize{25}{28}\selectfont\bfseries\textls[35]{MALEK GHABI}}\par\vspace{3pt}
+    {\fontsize{12}{14}\selectfont\bfseries\color{mainblue}#1}\par\vspace{4pt}
+    {\fontsize{9.5}{12}\selectfont Cluses, France\sep+33 6 04 10 21 56\sep\href{mailto:malekghabi.education@gmail.com}{malekghabi.education@gmail.com}}\par\vspace{3pt}
+    {\fontsize{10}{12}\selectfont\bluelink{https://github.com/malekghabi1607}{GitHub}\sep\bluelink{https://www.linkedin.com/in/malek-ghabi-3b3267a9/}{LinkedIn}\sep\bluelink{https://malek-ghabi-portfolio.com}{Portfolio}}
+  \end{minipage}\par\vspace{2pt}
+}
+
+% Taille du corps de texte (ajustée pour tenir sur une page)
+\AtBeginDocument{\fontsize{9.3}{11.1}\selectfont}

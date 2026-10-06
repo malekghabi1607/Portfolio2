@@ -1,0 +1,82 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\input{cv-style}
+
+\begin{document}
+\color{darktext}\fontsize{9.3}{11.1}\selectfont
+
+\cvheader{Software \& Data Developer \,|\, Apprentice at NOVOUTILS}
+
+\cvsection{PROFILE}
+{\fontsize{9.6}{11.6}\selectfont
+I hold a Bachelor's Degree in Computer Science from Avignon University and I am pursuing a Master's Degree in Computer Science at Université Catholique de Lille, specializing in Applied Computer Science and Intelligent Systems, through an apprenticeship at NOVOUTILS. I am interested in software development, data, databases and AI, with the goal of designing reliable, useful solutions aligned with business needs.\par}
+
+\cvsection{SKILLS}
+\textbf{Languages:} Java, Python, JavaScript, TypeScript, SQL, PHP, C/C++, Bash, HTML5, CSS3\par
+\textbf{Back-End \& APIs:} Spring Boot, FastAPI, Flask, Laravel, REST APIs, JWT, WebSockets, Swagger/OpenAPI\par
+\textbf{Front-End:} React, Vite, Tailwind CSS, Bootstrap, AJAX, Chart.js\par
+\textbf{Databases:} PostgreSQL, MySQL, SQLite, Supabase, Firebase, data modeling and migration\par
+\textbf{Data \& automation:} Pandas, NumPy, Scikit-Learn, Excel, Power BI, file processing, data visualization\par
+\textbf{DevOps \& tools:} Git, GitHub, Docker, Docker Compose, GitHub Actions, Linux, Nginx, Postman, VS Code, IntelliJ\par
+\textbf{Methods:} OOP, MVC architecture, UML, Agile/Scrum, testing, technical documentation\par
+\textbf{Soft skills:} Autonomy, rigor, organization, curiosity, teamwork, adaptability\par
+
+\cvsection{TECHNICAL PROJECTS}
+\entry{Aura Student Life OS}{React\techsep Spring Boot\techsep PostgreSQL\techsep Docker}
+Full-stack SaaS platform for organizing student life: finances, goals, planning, habits, sport tracking and an AI assistant.\par
+\dash{Full-stack architecture: React/Vite frontend, Spring Boot REST API (Swagger/OpenAPI), PostgreSQL and Docker.}
+\dash{Spring Security/JWT authentication, interactive dashboards, Excel/PDF exports and an AI assistant connected to the API.}
+\dash{Modular design bringing several business domains together in a global dashboard of personal indicators.}
+\vspace{1pt}
+\entry{Snake AI --- 24h to Code Hackathon}{JavaScript\techsep Canvas\techsep A*\techsep Q-Learning}
+Advanced version of the Snake game built in 24 hours, featuring an adaptive artificial intelligence.\par
+\dash{Evolving AI Beast whose behavior adapts to the player through reinforcement learning (Q-Learning).}
+\dash{Optimal pathfinding with A* and smart points fleeing the Snake using the Boids algorithm.}
+\dash{Combined several AI algorithms in real time without performance loss, with a smooth Canvas interface.}
+\vspace{1pt}
+\entry{EasyMonitor}{Bash\techsep Python\techsep Flask\techsep SQLite\techsep Chart.js}
+Distributed system monitoring tool tracking multiple virtual machines through a web interface.\par
+\dash{Bash/Python agent collecting CPU, RAM, disk, network and user metrics, sent to a Flask server over secured HTTP.}
+\dash{SQLite/RRDTool storage, real-time and historical charts, and automatic alerts (CPU, memory, full disk).}
+\dash{Network communication between two VMs, agent authentication and optimized collection frequency.}
+\vspace{1pt}
+\entry{WithYou}{React\techsep Laravel\techsep Socket.io\techsep Supabase}
+Collaborative real-time synchronized video-watching platform, built by a team of 5 --- MVP in progress.\par
+\dash{Synchronized video playback (YouTube IFrame API), virtual rooms and real-time chat with Socket.io and Laravel Reverb.}
+\dash{Laravel API with JWT authentication, role-based member permissions, polls and public room listing.}
+\dash{3-service architecture (React/Vite client, Laravel API, real-time service), deployment planned on Netlify/Render/Railway.}
+\vspace{1pt}
+\entry{Search Engine}{Java\techsep Indexing\techsep TF-IDF}
+Simplified search engine with corpus analysis, indexing and relevance ranking.\par
+\dash{Text normalization (case, punctuation, stop-words) and inverted index construction (term $\rightarrow$ documents).}
+\dash{TF-IDF weighting, cosine similarity and top-K result ranking on Wikipedia and book corpora.}
+\dash{Two vocabulary modes (full or reduced) and an API to easily plug in new corpus sources.}
+
+\cvsection{PROFESSIONAL EXPERIENCE}
+\entry{Software \& Data Engineer Apprentice --- NOVOUTILS, Thyez}{September 2026 -- Present}
+\dash{Redesigning a database architecture connected to the CEGID PMI ERP: analysis, structuring and data migration.}
+\dash{Enhancing a Power BI sales-tracking solution: dashboards, business KPIs and automated reporting.}
+\dash{Designing a measurement equipment management application: access control, logging, data backup and notifications.}
+\dash{Contributing to the coordination of an AI-driven software project, aligning business needs and technical specifications.}
+\vspace{1pt}
+\entry{Full-Stack Developer Intern --- CEA Marcoule}{May 2026 -- August 2026}
+\dash{Developed CADI Web, an internal application modernizing INSTN/CEA training processes.}
+\dash{Built React/TypeScript interfaces and Python/FastAPI APIs integrating existing processing tools.}
+\dash{Automated Excel, Word and CSV file processing with progress tracking and application logging.}
+\dash{Contributed to software architecture, testing, debugging and version control with Git.}
+
+\cvsection{EDUCATION}
+\entry{Master's Degree in Computer Science --- Applied Computer Science and Intelligent Systems}{2026 -- 2028}
+Université Catholique de Lille --- apprenticeship at NOVOUTILS\par\vspace{0.5pt}
+\entry{Bachelor's Degree in Computer Science}{2023 -- 2026}
+Avignon University, France\par\vspace{0.5pt}
+\entry{Bachelor of Science in Computer Science}{2025 -- 2026}
+University of Geneva, Switzerland --- dual enrollment alongside Avignon University, first year completed\par\vspace{0.5pt}
+\entry{French Baccalaureate --- Science track}{2023}
+Jean-Henri Fabre High School, France\par
+
+\cvsection{LANGUAGES}
+French: fluent\sep English: professional\sep Arabic: fluent\sep Italian: intermediate
+
+\end{document}
