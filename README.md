@@ -93,7 +93,7 @@ project/
 
 1. Cloner le dépôt
 ```bash
-git clone https://github.com/malekghabi607/portfolio.git
+git clone https://github.com/malekghabi1607/Portfolio2.git
 cd portfolio
 ```
 
@@ -156,8 +156,8 @@ Les traductions sont stockées dans `src/locales/`. Éditez `fr.json` pour le fr
 Pour me contacter, vous pouvez utiliser le formulaire de contact sur le portfolio ou me joindre directement :
 
 - **Email** : malekghabi.education@gmail.com
-- **LinkedIn** : [malek-ghabi-3b3267a9](https://linkedin.com/in/malek-ghabi-3b3267a9)
-- **GitHub** : [malekghabi607](https://github.com/malekghabi607)
+- **LinkedIn** : [malek-ghabi-3b3267a9](https://www.linkedin.com/in/malek-ghabi-3b3267a9/)
+- **GitHub** : [malekghabi1607](https://github.com/malekghabi1607)
 - **Téléphone** : +33 6 04 10 21 56
 
 ## 📄 Licence

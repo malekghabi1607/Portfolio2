@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Cisco">
+  <rect width="128" height="128" rx="20" fill="#0A66C2"/>
+  <path d="M24 74h80" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M36 66v-18M48 66V42M60 66V36M72 66V36M84 66V42M96 66V48" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+</svg>

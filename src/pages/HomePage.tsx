@@ -1,133 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Github, Linkedin, Mail, MapPin, Phone, GraduationCap, Briefcase, ExternalLink, Globe, Sparkles, Sun, Moon } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Menu, X, Github, Linkedin, Mail, MapPin, Phone, GraduationCap, Briefcase, ExternalLink, Globe, Sparkles, Sun, Moon, CalendarDays, CheckCircle2, Building2 } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { sendContactEmail } from '../utils/emailService';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import BackgroundAnimation from '../components/BackgroundAnimation';
+import TechnicalSkillsSection from '../components/TechnicalSkillsSection';
 import { projects as portfolioProjects } from '../data/projects';
 import { experiences as portfolioExperiences } from '../data/experiences';
-
-/* ===== Types & helpers pour SKILLS (nouveau) ===== */
-type Level = 'beginner' | 'intermediate' | 'advanced' | 'expert';
-type Skill = { name: string; logo: string; level?: Level };
-type SkillCategory = { title: string; skills: Skill[] };
-
-const LEVEL_PERCENT: Record<Level, number> = {
-  beginner: 35,
-  intermediate: 55,
-  advanced: 75,
-  expert: 92,
-};
-
-function percentFromLevel(level?: Level) {
-  return level ? LEVEL_PERCENT[level] : 0;
-}
-
-/** Petit composant interne utilisé SEULEMENT dans la grille des skills.
- *  Affiche le logo + un anneau circulaire qui s’anime AU SURVOL.
- */
-function CircleSkill({
-  name,
-  logo,
-  level,
-  isDark,
-}: { name: string; logo: string; level?: Level; isDark: boolean }) {
-  const [hover, setHover] = useState(false);
-
-  // Géométrie du cercle
-  const size = 76;       // taille du SVG (identique au conteneur ~ w-20/h-20 + padding)
-  const stroke = 6;      // épaisseur de l’anneau
-  const r = (size - stroke) / 2;
-  const C = 2 * Math.PI * r;
-
-  const pct = percentFromLevel(level);
-  const dashArray = C;
-  const dashOffset = hover && pct > 0 ? C * (1 - pct / 100) : C;
-
-  const track = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)';
-  const progress = isDark ? '#fb923c' : '#1e3a8a';
-
-  return (
-    <div
-      className="flex flex-col items-center gap-3 group/skill cursor-pointer"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      title={level ? `${name} • ${pct}%` : name}
-    >
-      <div
-        className={`relative w-20 h-20 flex items-center justify-center rounded-2xl p-3 transition-transform duration-300 overflow-hidden shadow-lg hover:shadow-xl hover:scale-105
-        ${isDark ? 'bg-gradient-to-br from-gray-700 to-gray-800' : 'bg-gradient-to-br from-stone-100 to-blue-50'}`}
-      >
-        {/* Halo doux au survol */}
-        <div
-          className={`absolute inset-0 pointer-events-none opacity-0 group-hover/skill:opacity-100 transition-opacity duration-200 blur-xl
-          ${isDark ? 'bg-gradient-to-br from-orange-500/25 to-red-500/25' : 'bg-gradient-to-br from-blue-500/20 to-slate-600/20'}`}
-        />
-
-       {/* Logo */}
-          <img
-            src={logo}
-            alt={name}
-            className="relative z-10 w-full h-full object-contain transition-transform duration-500
-                      group-hover/skill:brightness-110 group-hover/skill:drop-shadow group-hover/skill:scale-90"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src = '/images/skills/_fallback.svg';
-            }}
-            style={{
-              filter: hover
-                ? (isDark
-                    ? 'drop-shadow(0 0 6px rgba(251,146,60,.7))'
-                    : 'drop-shadow(0 0 6px rgba(30,58,138,.55))')
-                : 'none',
-            }}
-          />
-
-        {/* Anneau (SVG) : apparait uniquement au survol */}
-        <svg
-          width={size}
-          height={size}
-          viewBox={`0 0 ${size} ${size}`}
-          className="absolute inset-0 opacity-0 group-hover/skill:opacity-100 transition-opacity duration-150"
-          aria-hidden
-        >
-          {/* Piste */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            stroke={track}
-            strokeWidth={stroke}
-            fill="none"
-            strokeLinecap="round"
-          />
-          {/* Progression */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            stroke={progress}
-            strokeWidth={stroke}
-            fill="none"
-            strokeLinecap="round"
-            transform={`rotate(-90 ${size / 2} ${size / 2})`}
-            strokeDasharray={dashArray}
-            strokeDashoffset={dashOffset}
-            style={{ transition: 'stroke-dashoffset 650ms ease' }}
-          />
-        </svg>
-      </div>
-
-      <span
-        className={`text-sm font-semibold text-center transition-colors ${
-          isDark ? 'text-gray-300 group-hover/skill:text-cyan-400' : 'text-gray-700 group-hover/skill:text-blue-900'
-        }`}
-      >
-        {name}
-      </span>
-    </div>
-  );
-}
-/* ===== fin partie SKILLS ===== */
+import { education as educationData } from '../data/education';
 
 interface HomePageProps {
   isDark: boolean;
@@ -143,27 +23,21 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
   const [submitStatus, setSubmitStatus] = useState<{
     type: 'success' | 'error';
     message: string;
-    debug?: string;
     fallbackMailtoUrl?: string;
   } | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // ✅ relance l’observer quand langue ou thème changent
-  useScrollAnimation([language, isDark]);
+  useScrollAnimation();
 
-  // ✅ filet de sécurité : rend visibles les éléments si l’observer rate
   useEffect(() => {
-    const forceVisible = (rootSelector: string) => {
-      const root = document.querySelector(rootSelector);
-      if (!root) return;
-      root.querySelectorAll('.scroll-animate').forEach((el) => {
-        el.classList.add('visible');
-      });
-    };
-    forceVisible('#competences');
-    forceVisible('#formation');
-  }, [language, isDark]);
+    if (!location.hash) return;
+    const id = location.hash.replace('#', '');
+    window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  }, [location.hash]);
 
   const translations = {
     fr: {
@@ -174,12 +48,12 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
       experience: 'Expériences',
       projects: 'Projets',
       contact: 'Contact',
-      lookingFor: 'Recherche d’alternance',
-      jobTitle: 'Développement / Systèmes / Data',
-      discoverProjects: 'Contacter moi',
+      lookingFor: 'En alternance chez NOVOUTILS',
+      jobTitle: 'Développement logiciel · Data · IA',
+      discoverProjects: 'Contactez-moi',
       hello: 'Bonjour, je suis',
-      aboutText: 'Passionnée par l\'univers de l\'informatique depuis toujours, je poursuis actuellement une double formation en Licence Informatique à Avignon et en Bachelor en Sciences Informatiques à Genève. Cette expérience enrichissante me permet d\'explorer différentes approches pédagogiques et de développer une vision globale du domaine.',
-      aboutText2: 'Mon parcours est marqué par une curiosité constante et une volonté d\'apprendre au-delà des cours magistraux. Chaque projet représente pour moi une opportunité de repousser mes limites et de transformer des idées en solutions concrètes. Je recherche une alternance qui me permettra de mettre en pratique mes compétences tout en découvrant les réalités du monde professionnel au sein d\'une équipe dynamique.',
+      aboutText: 'Diplômée d’une Licence Informatique à Avignon Université, je m’intéresse au développement logiciel, aux systèmes, aux données et à l’intelligence artificielle. Mon parcours combine des bases solides en algorithmique, programmation orientée objet, bases de données, réseaux et projets applicatifs.',
+      aboutText2: 'Je poursuis un Master en informatique à l’Université Catholique de Lille, parcours Informatique appliquée et systèmes intelligents, en alternance chez NOVOUTILS. Mon objectif est de concevoir des solutions utiles, fiables et adaptées aux besoins métier, en combinant développement logiciel, data et intelligence artificielle.',
       totalProjects: 'PROJETS RÉALISÉS',
       totalProjectsDesc: 'Solutions Web innovantes',
       certificates: 'DIPLÔMES',
@@ -217,12 +91,12 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
       experience: 'Experience',
       projects: 'Projects',
       contact: 'Contact',
-      lookingFor: 'Looking for work-study',
-      jobTitle: 'Development / Systems / Data',
+      lookingFor: 'Apprenticeship at NOVOUTILS',
+      jobTitle: 'Software Development · Data · AI',
       discoverProjects: 'Contact me',
       hello: 'Hello, I am',
-      aboutText: 'Passionate about the world of computer science since always, I am currently pursuing a dual degree in Computer Science Bachelor at Avignon and Bachelor of Computer Science at Geneva. This enriching experience allows me to explore different pedagogical approaches and develop a global vision of the field.',
-      aboutText2: 'My journey is marked by constant curiosity and a willingness to learn beyond lectures. Each project represents an opportunity for me to push my limits and transform ideas into concrete solutions. I am looking for a work-study opportunity that will allow me to put my skills into practice while discovering the realities of the professional world within a dynamic team.',
+      aboutText: 'I hold a Bachelor’s Degree in Computer Science from Avignon University, with a strong interest in software development, systems, data and artificial intelligence. My background combines solid foundations in algorithms, object-oriented programming, databases, networks and applied software projects.',
+      aboutText2: 'I am pursuing a Master’s Degree in Computer Science at Université Catholique de Lille, specializing in Applied Computer Science and Intelligent Systems, through an apprenticeship at NOVOUTILS. My goal is to design useful, reliable solutions aligned with business needs by combining software development, data and artificial intelligence.',
       totalProjects: 'COMPLETED PROJECTS',
       totalProjectsDesc: 'Innovative Web solutions',
       certificates: 'CERTIFICATES',
@@ -263,6 +137,28 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
     language === 'fr'
       ? 'CV_Malek_Ghabi_FR.pdf'
       : 'CV_Malek_Ghabi_EN.pdf';
+  const contactLinks = [
+    {
+      href: 'mailto:malekghabi.education@gmail.com',
+      label: 'Email: malekghabi.education@gmail.com',
+      icon: Mail,
+    },
+    {
+      href: 'tel:+33604102156',
+      label: 'Téléphone: +33 6 04 10 21 56',
+      icon: Phone,
+    },
+    {
+      href: 'https://github.com/malekghabi1607',
+      label: 'GitHub: malekghabi1607',
+      icon: Github,
+    },
+    {
+      href: 'https://www.linkedin.com/in/malek-ghabi-3b3267a9/',
+      label: 'LinkedIn: malek-ghabi-3b3267a9',
+      icon: Linkedin,
+    },
+  ];
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -280,147 +176,17 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
     image: p.image,
   }));
 
-  /* ===== Données SKILLS (avec level) ===== */
-  const skillCategories: SkillCategory[] = [
-    {
-      title: language === 'fr' ? 'Développement Frontend' : 'Frontend Development',
-      skills: [
-        { name: 'HTML5',       logo: '/images/skills/html5.svg',       level: 'expert' },
-        { name: 'CSS3',        logo: '/images/skills/css3.svg',        level: 'advanced' },
-        { name: 'JavaScript',  logo: '/images/skills/javascript.svg',  level: 'advanced' },
-        { name: 'TypeScript',  logo: '/images/skills/typescript.svg',  level: 'intermediate' },
-        { name: 'React',       logo: '/images/skills/react.svg',       level: 'advanced' },
-        { name: 'Vue.js',      logo: '/images/skills/vuejs.svg',       level: 'intermediate' },
-        { name: 'PHP',         logo: '/images/skills/php.svg',         level: 'advanced' },
-        { name: 'Tailwind CSS',logo: '/images/skills/tailwind.svg',    level: 'intermediate' },
-        { name: 'Bootstrap 5', logo: '/images/skills/bootstrap.svg',   level: 'intermediate' },
-        { name: 'Chart.js',    logo: '/images/skills/chartjs.svg',     level: 'intermediate' },
-        { name: 'AJAX',        logo: '/images/skills/javascript.svg',  level: 'intermediate' },
-        { name: 'Vite',        logo: '/images/skills/vite.svg',        level: 'intermediate' },
-        { name: 'Yii Framework', logo: '/images/skills/yii.svg',       level: 'beginner' },
-      ],
-    },
-    {
-      title: language === 'fr' ? 'Développement Backend' : 'Backend Development',
-      skills: [
-        { name: 'Node.js', logo: '/images/skills/nodejs.svg',   level: 'intermediate' },
-        { name: 'Python',  logo: '/images/skills/python.svg',   level: 'advanced' },
-        { name: 'Bash',    logo: '/images/skills/bash.svg',     level: 'intermediate' },
-        { name: 'Flask',   logo: '/images/skills/flask.svg',    level: 'intermediate' },
-        { name: 'Java',    logo: '/images/skills/java.svg',     level: 'advanced' },
-        { name: 'JavaFX',  logo: '/images/skills/javafx.svg',   level: 'intermediate' },
-        { name: 'Spring',  logo: '/images/skills/spring.svg',   level: 'intermediate' },
-        { name: 'Laravel', logo: '/images/skills/laravel.svg',  level: 'intermediate' },
-        { name: 'Socket.io', logo: '/images/skills/socketio.svg', level: 'intermediate' },
-        { name: 'JWT',     logo: '/images/skills/jwt.svg',      level: 'intermediate' },
-        { name: 'C',       logo: '/images/skills/c.svg',        level: 'advanced' },
-        { name: 'C++',     logo: '/images/skills/cplusplus.svg',level: 'advanced' },
-        { name: 'R',       logo: '/images/skills/r.svg',        level: 'intermediate' },
-        { name: 'Matlab',  logo: '/images/skills/matlab.svg',   level: 'intermediate' },
-        { name: 'Arduino', logo: '/images/skills/arduino.svg',  level: 'intermediate' },
-        { name: 'Julia',   logo: '/images/skills/julia.svg',    level: 'intermediate' },
-      ],
-    },
-    {
-      title: 'DevSecOps & Cloud',
-      skills: [
-        { name: 'Docker', logo: '/images/skills/docker.svg', level: 'intermediate' },
-        { name: 'Kubernetes', logo: '/images/skills/kubernetes.svg', level: 'beginner' },
-        { name: 'Terraform', logo: '/images/skills/terraform.svg', level: 'beginner' },
-        { name: 'Ansible', logo: '/images/skills/ansible.svg', level: 'beginner' },
-        { name: 'GitLab CI', logo: '/images/skills/gitlab.svg', level: 'intermediate' },
-        { name: 'GitHub Actions', logo: '/images/skills/github.svg', level: 'intermediate' },
-        { name: 'Netlify', logo: '/images/skills/netlify.svg', level: 'intermediate' },
-        { name: 'Render', logo: '/images/skills/render.svg', level: 'intermediate' },
-        { name: 'Railway', logo: '/images/skills/railway.svg', level: 'intermediate' },
-        { name: 'AWS',    logo: '/images/skills/aws.svg',    level: 'intermediate' },
-      ],
-    },
-    {
-      title: language === 'fr' ? 'Base de Données' : 'Databases',
-      skills: [
-        { name: 'SQL',        logo: '/images/skills/sql.svg',        level: 'advanced' },
-        { name: 'PostgreSQL', logo: '/images/skills/postgresql.svg', level: 'advanced' },
-        { name: 'MySQL',      logo: '/images/skills/mysql.svg',      level: 'advanced' },
-        { name: 'SQLite',     logo: '/images/skills/sqlite.svg', level: 'intermediate' },
-        { name: 'MongoDB',    logo: '/images/skills/mongodb.svg', level: 'intermediate' },
-        { name: 'Redis',      logo: '/images/skills/redis.svg', level: 'intermediate' },
-        { name: 'Supabase',   logo: '/images/skills/supabase.svg', level: 'intermediate' },
-        { name: 'Firebase',   logo: '/images/skills/firebase.svg',   level: 'intermediate' },
-      ],
-    },
-    {
-      title: language === 'fr' ? 'Réseaux' : 'Networks',
-      skills: [
-        { name: 'Cisco CCNA 1 & 2', logo: '/images/skills/cisco.svg', level: 'intermediate' },
-        { name: 'OSI Model', logo: '/images/skills/osi.svg', level: 'intermediate' },
-        { name: 'TCP/IP', logo: '/images/skills/tcpip.svg', level: 'intermediate' },
-        { name: 'VLAN', logo: '/images/skills/vlan.svg', level: 'intermediate' },
-        { name: 'Routing & Switching', logo: '/images/skills/routing.svg', level: 'intermediate' },
-        { name: 'DNS/DHCP', logo: '/images/skills/dns-dhcp.svg', level: 'intermediate' },
-        { name: 'Firewall', logo: '/images/skills/firewall.svg', level: 'intermediate' },
-        { name: 'VPN', logo: '/images/skills/vpn.svg', level: 'intermediate' },
-        { name: 'Network Security', logo: '/images/skills/network-security.svg', level: 'intermediate' },
-        { name: 'Packet Tracer', logo: '/images/skills/packet-tracer.svg', level: 'intermediate' },
-        { name: 'Wireshark', logo: '/images/skills/wireshark.svg', level: 'intermediate' },
-      ],
-    },
-    {
-      title: language === 'fr' ? 'Outils' : 'Tools',
-      skills: [
-        { name: 'GitHub',  logo: '/images/skills/github.svg',  level: 'advanced' },
-        { name: 'Git',     logo: '/images/skills/git.svg',     level: 'advanced' },
-        { name: 'Postman', logo: '/images/skills/postman.svg', level: 'intermediate' },
-        { name: 'Swagger', logo: '/images/skills/swagger.svg', level: 'intermediate' },
-        { name: 'Jira',    logo: '/images/skills/jira.svg',    level: 'intermediate' },
-        { name: 'Notion',  logo: '/images/skills/notion.svg',  level: 'intermediate' },
-        { name: 'npm',     logo: '/images/skills/npm.svg',     level: 'intermediate' },
-        { name: 'Composer',logo: '/images/skills/composer.svg',level: 'intermediate' },
-        { name: 'ESLint',  logo: '/images/skills/eslint.svg',  level: 'intermediate' },
-        { name: 'Figma',   logo: '/images/skills/figma.svg',   level: 'intermediate' },
-        { name: 'Pack Office', logo: '/images/skills/office.svg', level: 'advanced' },
-        { name: 'VS Code', logo: '/images/skills/vscode.svg',  level: 'advanced' },
-        { name: 'Eclipse', logo: '/images/skills/eclipse.svg', level: 'intermediate' },
-      ],
-    },
-    {
-      title: language === 'fr' ? 'Plateformes & IDE' : 'Platforms & IDE',
-      skills: [
-        { name: 'Linux',    logo: '/images/skills/linux.svg',    level: 'advanced' },
-        { name: 'Windows',  logo: '/images/skills/windows.svg',  level: 'advanced' },
-        { name: 'VirtualBox', logo: '/images/skills/virtualbox.svg', level: 'intermediate' },
-        { name: 'IntelliJ', logo: '/images/skills/intellij.svg', level: 'advanced' },
-        { name: 'PyCharm', logo: '/images/skills/pycharm.svg', level: 'intermediate' },
-        { name: 'WebStorm', logo: '/images/skills/webstorm.svg', level: 'intermediate' },
-        { name: 'PHPStorm', logo: '/images/skills/phpstorm.svg', level: 'intermediate' },
-        { name: 'Eclipse', logo: '/images/skills/eclipse.svg', level: 'intermediate' },
-      ],
-    },
-  ];
-
-  const education = [
-    {
-      year: '2025-2027',
-      degree: language === 'fr' ? 'Bachelor en Sciences Informatiques' : 'Bachelor in Computer Science',
-      school: language === 'fr' ? 'Université de Genève, Suisse' : 'University of Geneva, Switzerland',
-      status: language === 'fr' ? '(en cours)' : '(in progress)'
-    },
-    {
-      year: '2023-2026',
-      degree: language === 'fr' ? 'Licence Informatique (L3)' : 'Computer Science Bachelor (L3)',
-      school: language === 'fr' ? 'Université d\'Avignon, Avignon' : 'University of Avignon, Avignon',
-      status: language === 'fr' ? '(en cours)' : '(in progress)'
-    },
-    {
-      year: '2023',
-      degree: language === 'fr' ? 'Baccalauréat Général scientifique' : 'Scientific General Baccalaureate',
-      school: language === 'fr' ? 'Lycée Jean Henri Fabre, Carpentras' : 'Jean Henri Fabre High School, Carpentras',
-      status: ''
-    }
-  ];
+  const education = educationData.map((edu) => ({
+    year: edu.year,
+    degree: language === 'fr' ? edu.degreeFr : edu.degreeEn,
+    school: language === 'fr' ? edu.schoolFr : edu.schoolEn,
+    status: language === 'fr' ? edu.statusFr : edu.statusEn,
+    summary: language === 'fr' ? edu.summaryFr : edu.summaryEn,
+    tags: language === 'fr' ? edu.tagsFr : edu.tagsEn,
+  }));
 
   const experiences = portfolioExperiences.map((experience) => ({
-    year: experience.year,
+    year: language === 'fr' ? (experience.yearFr ?? experience.year) : (experience.yearEn ?? experience.year),
     title: language === 'fr' ? experience.titleFr : experience.titleEn,
     company: experience.company,
     tasks: language === 'fr' ? experience.tasksFr : experience.tasksEn,
@@ -439,7 +205,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               </div>
             </div>
 
-            <div className="hidden md:flex space-x-8 items-center">
+            <div className="hidden lg:flex space-x-8 items-center">
               {[t.home, t.about, t.skills, t.education, t.experience, t.projects, t.contact].map((item, index) => (
                 <button
                   key={item}
@@ -464,7 +230,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               </button>
             </div>
 
-            <div className="flex items-center gap-4 md:hidden">
+            <div className="flex items-center gap-4 lg:hidden">
               <button
                 onClick={() => setIsDark(!isDark)}
                 className={`p-2 rounded-full transition-all duration-300 ${isDark ? 'bg-cyan-500 hover:bg-cyan-400' : 'bg-slate-900 hover:bg-slate-800'}`}
@@ -489,7 +255,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
         </div>
 
         {isMenuOpen && (
-          <div className={`md:hidden backdrop-blur-lg border-t transition-colors duration-500 ${isDark ? 'bg-gray-900/95 border-gray-700' : 'bg-white/95 border-stone-200'}`}>
+          <div className={`lg:hidden backdrop-blur-lg border-t transition-colors duration-500 ${isDark ? 'bg-gray-900/95 border-gray-700' : 'bg-white/95 border-stone-200'}`}>
             <div className="px-4 py-4 space-y-3">
               {[t.home, t.about, t.skills, t.education, t.experience, t.projects, t.contact].map((item, index) => (
                 <button
@@ -546,7 +312,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
             {t.jobTitle}
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4 mb-8 text-gray-600 animate-fade-in">
+          <div className={`flex flex-wrap justify-center gap-4 mb-8 animate-fade-in ${isDark ? 'text-gray-200' : 'text-gray-600'}`}>
             <div className={`flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm ${isDark ? 'bg-gray-800/60' : 'bg-white/60'}`}>
               <MapPin className={`w-4 h-4 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
               <span>Avignon</span>
@@ -563,34 +329,38 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
 
           <div className="flex justify-center space-x-4 mb-8 animate-fade-in">
             <a
-              href="mailto:malekghabi.education@gmail.com"
+              href={contactLinks[0].href}
               className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
-              title="Email: malekghabi.education@gmail.com"
+              title={contactLinks[0].label}
+              aria-label={contactLinks[0].label}
             >
               <Mail className="w-5 h-5" />
             </a>
             <a
-              href="tel:+33604102156"
+              href={contactLinks[1].href}
               className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'bg-gradient-to-r from-slate-800 to-blue-900 hover:from-slate-700 hover:to-blue-800'}`}
-              title="Téléphone: +33 6 04 10 21 56"
+              title={contactLinks[1].label}
+              aria-label={contactLinks[1].label}
             >
               <Phone className="w-5 h-5" />
             </a>
             <a
-              href="https://github.com/malekghabi607"
+              href={contactLinks[2].href}
               target="_blank"
               rel="noopener noreferrer"
               className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-indigo-600 to-blue-700 hover:from-indigo-500 hover:to-blue-600' : 'bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800'}`}
-              title="GitHub: malekghabi607"
+              title={contactLinks[2].label}
+              aria-label={contactLinks[2].label}
             >
               <Github className="w-5 h-5" />
             </a>
             <a
-              href="https://linkedin.com/in/malek-ghabi-3b3267a9"
+              href={contactLinks[3].href}
               target="_blank"
               rel="noopener noreferrer"
               className={`p-3 text-white rounded-full transition-all duration-300 hover:scale-110 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}
-              title="LinkedIn: malek-ghabi-3b3267a9"
+              title={contactLinks[3].label}
+              aria-label={contactLinks[3].label}
             >
               <Linkedin className="w-5 h-5" />
             </a>
@@ -628,7 +398,10 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
           <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
             <div className="scroll-animate">
               <h3 className={`text-3xl font-bold mb-6 ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
-                {t.hello} <span className="bg-gradient-to-r from-slate-900 to-blue-900 bg-clip-text text-transparent">Malek Ghabi</span>
+                {t.hello}{' '}
+                <span className={`bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 to-blue-400' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`}>
+                  Malek Ghabi
+                </span>
               </h3>
               <p className={`text-lg leading-relaxed mb-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                 {t.aboutText}
@@ -802,84 +575,74 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
         </div>
       </section>
 
-      <section id="competences" className="min-h-screen flex items-center justify-center px-4 py-20">
-        <div className="max-w-7xl mx-auto w-full">
-          <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
-            {t.technicalSkills}
-          </h2>
+      <TechnicalSkillsSection isDark={isDark} language={language} title={t.technicalSkills} />
 
-          {/* ====== Rendu de la grille des catégories de skills (corrigé) ====== */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {skillCategories.map((category, catIndex) => (
-              <div
-                key={category.title}
-                className={`scroll-animate backdrop-blur-sm rounded-2xl p-8 border transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden ${isDark ? 'bg-gray-800/70 border-gray-700 hover:border-orange-500/50' : 'bg-white/70 border-stone-200 hover:border-blue-900/50'}`}
-                style={{ transitionDelay: `${catIndex * 0.1}s` }}
-              >
-                <h3 className={`text-2xl font-bold mb-8 text-center ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
-                  {category.title}
-                </h3>
-
-                <div className="grid grid-cols-3 gap-6">
-                  {category.skills.map((skill) => (
-                    <CircleSkill
-                      key={skill.name}
-                      name={skill.name}
-                      logo={skill.logo}
-                      level={skill.level}
-                      isDark={isDark}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* ====== fin rendu skills ====== */}
-        </div>
-      </section>
-
-      <section id="formation" className="min-h-screen flex items-center justify-center px-4 py-20">
-        <div className="max-w-6xl mx-auto w-full">
+      <section id="formation" className="flex min-h-screen items-center justify-center px-4 py-20">
+        <div className="mx-auto w-full max-w-6xl">
           <h2 className={`scroll-animate text-5xl md:text-6xl font-bold text-center mb-16 bg-clip-text text-transparent ${isDark ? 'bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
             {t.education}
           </h2>
 
-          <div className="relative">
-            <div className={`absolute left-8 top-0 bottom-0 w-1 ${isDark ? 'bg-gradient-to-b from-orange-500 via-red-500 to-amber-500' : 'bg-gradient-to-b from-slate-900 via-blue-900 to-slate-800'}`}></div>
+          <div className="relative mx-auto max-w-5xl">
+            <div className={`absolute left-5 top-5 bottom-5 hidden w-px md:block ${isDark ? 'bg-gradient-to-b from-cyan-400/80 via-blue-500/70 to-indigo-500/60' : 'bg-gradient-to-b from-slate-900 via-blue-900 to-slate-500'}`}></div>
 
-            <div className="space-y-12">
+            <div className="space-y-6">
               {education.map((edu, index) => (
                 <div
                   key={index}
-                  className="scroll-animate relative pl-20"
+                  className="scroll-animate relative md:pl-16"
                   style={{transitionDelay: `${index * 0.1}s`}}
                 >
-                  <div className={`absolute left-0 w-16 h-16 rounded-full flex items-center justify-center shadow-xl ${isDark ? 'bg-gradient-to-br from-cyan-600 to-blue-600' : 'bg-gradient-to-br from-slate-900 to-blue-900'}`}>
-                    <GraduationCap className="w-8 h-8 text-white" />
+                  <div className={`absolute left-0 top-7 hidden h-10 w-10 items-center justify-center rounded-full border shadow-lg md:flex ${isDark ? 'border-cyan-400/30 bg-slate-900 text-cyan-300 shadow-cyan-950/40' : 'border-blue-900/20 bg-white text-blue-900 shadow-blue-900/10'}`}>
+                    <GraduationCap className="h-5 w-5" />
                   </div>
 
-                  <div className={`backdrop-blur-sm rounded-2xl p-8 border transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-2xl ${isDark ? 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-gray-700 hover:border-orange-500' : 'bg-gradient-to-br from-white/80 to-blue-50/80 border-stone-200 hover:border-blue-900'}`}>
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className={`px-4 py-2 rounded-full text-sm font-bold shadow-md ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' : 'bg-gradient-to-r from-slate-900 to-blue-900 text-white'}`}>
-                        {edu.year}
-                      </span>
-                      {edu.status && (
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-cyan-900/40 text-cyan-300 border border-cyan-700' : 'bg-blue-100 text-blue-800 border border-blue-300'}`}>
-                          {edu.status}
-                        </span>
-                      )}
+                  <div className={`group relative overflow-hidden rounded-xl border p-6 shadow-lg backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${isDark ? 'border-gray-700 bg-gray-800/65 hover:border-cyan-500/40' : 'border-stone-200 bg-white/75 hover:border-blue-900/30'}`}>
+                    <div className={`absolute inset-y-0 left-0 w-1 ${isDark ? 'bg-gradient-to-b from-cyan-400 via-blue-500 to-indigo-500' : 'bg-gradient-to-b from-slate-900 via-blue-900 to-slate-700'}`} />
+
+                    <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                      <div className="min-w-0 flex-1">
+                        <div className="mb-4 flex flex-wrap items-center gap-3">
+                          <span className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold shadow-md ${isDark ? 'bg-cyan-500/15 text-cyan-200 ring-1 ring-cyan-400/25' : 'bg-slate-900 text-white'}`}>
+                            <CalendarDays className="h-4 w-4" />
+                            {edu.year}
+                          </span>
+
+                          {edu.status && (
+                            <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${isDark ? 'bg-blue-500/10 text-blue-200 ring-1 ring-blue-400/25' : 'bg-blue-50 text-blue-900 ring-1 ring-blue-200'}`}>
+                              <CheckCircle2 className="h-3.5 w-3.5" />
+                              {edu.status.replace(/[()]/g, '')}
+                            </span>
+                          )}
+                        </div>
+
+                        <h3 className={`mb-3 text-2xl font-bold leading-tight ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
+                          {edu.degree}
+                        </h3>
+
+                        <div className="mb-4 flex items-center gap-2">
+                          <Building2 className={`h-5 w-5 shrink-0 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
+                          <p className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{edu.school}</p>
+                        </div>
+
+                        <p className={`max-w-3xl text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                          {edu.summary}
+                        </p>
+                      </div>
+
+                      <div className="flex max-w-sm flex-wrap gap-2 lg:justify-end">
+                        {edu.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className={`rounded-full px-3 py-1.5 text-xs font-semibold ${isDark ? 'bg-gray-700/70 text-gray-200 ring-1 ring-gray-600' : 'bg-blue-50/80 text-blue-900 ring-1 ring-blue-100'}`}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    <h3 className={`text-2xl font-bold mb-3 ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
-                      {edu.degree}
-                    </h3>
-
-                    <div className="flex items-center gap-2">
-                      <svg className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
-                      <p className={`text-lg font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{edu.school}</p>
-                    </div>
+                    <div className={`mt-5 h-px w-full ${isDark ? 'bg-gradient-to-r from-cyan-400/30 via-blue-400/10 to-transparent' : 'bg-gradient-to-r from-blue-900/20 via-slate-300/40 to-transparent'}`} />
                   </div>
                 </div>
               ))}
@@ -961,7 +724,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
                       </span>
                     ))}
                   </div>
-                  <div className={`flex items-center bg-clip-text text-transparent transition-colors font-medium ${isDark ? 'bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-300 hover:to-red-300' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}>
+                  <div className={`flex items-center transition-colors font-medium ${isDark ? 'text-orange-300 group-hover:text-orange-200' : 'text-blue-900 group-hover:text-slate-800'}`}>
                     {t.viewDetails} <ExternalLink className="w-4 h-4 ml-2" />
                   </div>
                 </div>
@@ -983,40 +746,44 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
           <div className="scroll-animate mb-8">
             <div className="flex justify-center items-center gap-6">
               <a
-                href="mailto:malekghabi.education@gmail.com"
+                href={contactLinks[0].href}
                 className="group"
-                title="malekghabi.education@gmail.com"
+                title={contactLinks[0].label}
+                aria-label={contactLinks[0].label}
               >
                 <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}>
                   <Mail className="w-6 h-6" />
                 </div>
               </a>
               <a
-                href="tel:+33604102156"
+                href={contactLinks[1].href}
                 className="group"
-                title="+33 6 04 10 21 56"
+                title={contactLinks[1].label}
+                aria-label={contactLinks[1].label}
               >
                 <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'bg-gradient-to-r from-slate-800 to-blue-900 hover:from-slate-700 hover:to-blue-800'}`}>
                   <Phone className="w-6 h-6" />
                 </div>
               </a>
               <a
-                href="https://github.com/malekghabi1607"
+                href={contactLinks[2].href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group"
-                title="GitHub: malekghabi607"
+                title={contactLinks[2].label}
+                aria-label={contactLinks[2].label}
               >
                 <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-indigo-600 to-blue-700 hover:from-indigo-500 hover:to-blue-600' : 'bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800'}`}>
                   <Github className="w-6 h-6" />
                 </div>
               </a>
               <a
-                href="https://linkedin.com/in/malek-ghabi-3b3267a9"
+                href={contactLinks[3].href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group"
-                title="LinkedIn: malek-ghabi-3b3267a9"
+                title={contactLinks[3].label}
+                aria-label={contactLinks[3].label}
               >
                 <div className={`p-4 text-white rounded-full transition-all duration-300 group-hover:scale-125 shadow-lg ${isDark ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900 hover:from-slate-800 hover:to-blue-800'}`}>
                   <Linkedin className="w-6 h-6" />
@@ -1035,22 +802,17 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               const result = await sendContactEmail(formData);
 
               if (result.success) {
-                const fallbackMessage =
-                  language === 'fr'
-                    ? 'EmailJS indisponible. Ouverture de votre application mail pour envoyer le message.'
-                    : 'EmailJS unavailable. Opening your mail app to send the message.';
                 setSubmitStatus({
                   type: 'success',
-                  message: result.fallbackUsed ? fallbackMessage : t.successMessage,
-                  debug: result.debug,
-                  fallbackMailtoUrl: result.fallbackMailtoUrl
+                  message: t.successMessage
                 });
                 setFormData({ name: '', email: '', message: '' });
               } else {
                 setSubmitStatus({
                   type: 'error',
-                  message: result.error || t.errorMessage,
-                  debug: result.debug,
+                  message: language === 'fr'
+                    ? 'Le formulaire est momentanément indisponible. Vous pouvez envoyer votre message par e-mail.'
+                    : 'The form is temporarily unavailable. You can send your message by email.',
                   fallbackMailtoUrl: result.fallbackMailtoUrl
                 });
               }
@@ -1061,12 +823,6 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
             {submitStatus && (
               <div className={`p-4 rounded-lg ${submitStatus.type === 'success' ? (isDark ? 'bg-green-900/50 text-green-200 border border-green-700' : 'bg-green-100 text-green-800 border border-green-300') : (isDark ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-red-100 text-red-800 border border-red-300')}`}>
                 {submitStatus.message}
-                {submitStatus.debug && (
-                  <p className={`mt-2 text-xs break-all ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    {language === 'fr' ? 'Details techniques: ' : 'Technical details: '}
-                    {submitStatus.debug}
-                  </p>
-                )}
                 {submitStatus.type === 'error' && submitStatus.fallbackMailtoUrl && (
                   <a
                     href={submitStatus.fallbackMailtoUrl}
@@ -1138,11 +894,53 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
         </div>
       </section>
 
-      <footer className={`py-8 ${isDark ? 'bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-white">
-            © 2025 Malek Ghabi. {language === 'fr' ? 'Tous droits réservés.' : 'All rights reserved.'}
-          </p>
+      <footer className={`py-10 ${isDark ? 'bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800'}`}>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Georgia, serif' }}>
+                Malek Ghabi
+              </p>
+              <p className="mt-2 text-sm text-gray-300">
+                {language === 'fr'
+                  ? 'Développement / Systèmes / Data - Avignon'
+                  : 'Development / Systems / Data - Avignon'}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {contactLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    aria-label={link.label}
+                    title={link.label}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-white/15 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-sm text-gray-300">
+            <p>
+              © 2025 Malek Ghabi. {language === 'fr' ? 'Tous droits réservés.' : 'All rights reserved.'}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+              <a href={contactLinks[0].href} className="hover:text-white transition-colors">
+                malekghabi.education@gmail.com
+              </a>
+              <a href={contactLinks[1].href} className="hover:text-white transition-colors">
+                +33 6 04 10 21 56
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

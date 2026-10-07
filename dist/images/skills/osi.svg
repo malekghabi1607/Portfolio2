@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="OSI Model">
+  <rect width="128" height="128" rx="20" fill="#0B3B66"/>
+  <rect x="34" y="22" width="60" height="12" fill="#BFDBFE"/>
+  <rect x="34" y="36" width="60" height="12" fill="#93C5FD"/>
+  <rect x="34" y="50" width="60" height="12" fill="#60A5FA"/>
+  <rect x="34" y="64" width="60" height="12" fill="#3B82F6"/>
+  <rect x="34" y="78" width="60" height="12" fill="#2563EB"/>
+  <rect x="34" y="92" width="60" height="12" fill="#1D4ED8"/>
+  <text x="64" y="118" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" font-weight="700" fill="#DBEAFE">OSI</text>
+</svg>

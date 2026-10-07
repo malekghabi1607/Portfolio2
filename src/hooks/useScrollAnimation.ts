@@ -1,14 +1,18 @@
-import { useEffect, useRef, type DependencyList } from 'react';
+import { useEffect } from 'react';
 
 /**
  * Observe les éléments .scroll-animate et ajoute .visible
- * quand ils entrent dans le viewport. Se reconfigure quand
- * les dépendances changent (langue, thème, etc.).
+ * quand ils entrent dans le viewport.
  */
-export function useScrollAnimation(deps: DependencyList = []): void {
-  const elementsRef = useRef<HTMLElement[]>([]);
-
+export function useScrollAnimation(): void {
   useEffect(() => {
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('.scroll-animate'));
+
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((el) => el.classList.add('visible'));
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -20,17 +24,20 @@ export function useScrollAnimation(deps: DependencyList = []): void {
       { threshold: 0.1 }
     );
 
-    const elements = document.querySelectorAll('.scroll-animate');
-    elements.forEach((el) => observer.observe(el));
+    elements.forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        el.classList.add('visible');
+      }
+      observer.observe(el);
+    });
 
-    elementsRef.current = Array.from(elements) as HTMLElement[];
+    const fallback = window.setTimeout(() => {
+      elements.forEach((el) => el.classList.add('visible'));
+    }, 800);
 
     return () => {
-      elements.forEach((el) => observer.unobserve(el));
+      window.clearTimeout(fallback);
       observer.disconnect();
     };
-  }, deps);
-
-
-  
+  }, []);
 }

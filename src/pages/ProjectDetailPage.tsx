@@ -60,7 +60,7 @@ export default function ProjectDetailPage({ isDark, setIsDark, language, setLang
             {language === 'fr' ? 'Projet non trouvé' : 'Project not found'}
           </h1>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/#projets')}
             className={`px-6 py-3 rounded-lg transition-colors ${
               isDark
                 ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white'
@@ -146,7 +146,7 @@ export default function ProjectDetailPage({ isDark, setIsDark, language, setLang
       {/* Fil d’Ariane */}
       <div className="max-w-7xl mx-auto px-4 py-8 pt-24">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/#projets')}
           className={`flex items-center gap-2 transition-colors mb-8 group font-medium ${
             isDark ? 'text-gray-300 hover:text-cyan-400' : 'text-gray-700 hover:text-blue-900'
           }`}

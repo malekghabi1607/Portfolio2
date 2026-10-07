@@ -154,6 +154,9 @@ export const projects: Project[] = [
       '/images/projects/cadi-web1.jpg',
       '/images/projects/cadi-web2.jpg'
     ],
+    liveUrl: 'https://instn.cea.fr/',
+    liveNoteFr: "Site officiel INSTN / CEA. L'application CADI Web est un outil interne non public.",
+    liveNoteEn: 'Official INSTN / CEA website. CADI Web is a private internal tool.',
   },
 
   {
@@ -232,7 +235,9 @@ export const projects: Project[] = [
       '/images/projects/aura1.jpg',
       '/images/projects/aura2.jpg'
     ],
-    githubUrl: 'https://github.com/malekghabi1607/aura-student-life-os'
+    githubUrl: 'https://github.com/malekghabi1607/aura-student-life-os',
+    liveNoteFr: 'Hébergement public à ajouter dès qu’il est disponible.',
+    liveNoteEn: 'Public deployment to be added when available.',
   },
 
 
@@ -495,7 +500,7 @@ export const projects: Project[] = [
       '/images/projects/moteur-recherche3.jpg',
       '/images/projects/moteur-recherche4.jpg',
     ],
-    githubUrl: 'https://github.com/malekghabi607/MoteurRecherche'
+    githubUrl: 'https://github.com/malekghabi1607/MoteurDeRecherche'
   },
 
   {
@@ -554,7 +559,9 @@ export const projects: Project[] = [
     '/images/projects/task-manager2.jpg',
     '/images/projects/task-manager3.jpg'
   ],
-  githubUrl: 'https://github.com/malekghabi607/TaskManager'
+  githubUrl: 'https://github.com/malekghabi1607/task-manager-springboot',
+  liveNoteFr: 'Hébergement public à ajouter lorsque le projet sera finalisé.',
+  liveNoteEn: 'Public deployment to be added when the project is complete.',
 },
 
   {
@@ -1144,7 +1151,7 @@ export const projects: Project[] = [
 
     
   ],
-  liveUrl: 'https://with-you.website',
+  liveUrl: 'https://withyou-app.netlify.app/',
   githubUrl: 'https://github.com/malekghabi1607/WithYou',
  
 },{
@@ -1227,9 +1234,7 @@ export const projects: Project[] = [
 
   image: '/images/projects/portfolio-v2.jpg',
   galleryImages: [
-    '/images/projects/portfolio-v2-1.jpg',
-    '/images/projects/portfolio-v2-2.jpg',
-    '/images/projects/portfolio-v2-3.jpg'
+    '/images/projects/portfolio-v2-1.jpg'
   ],
   githubUrl: 'https://github.com/malekghabi1607/Portfolio2',
   liveUrl: 'https://malek-ghabi-portfolio.com',

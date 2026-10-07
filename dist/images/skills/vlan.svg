@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="VLAN">
+  <rect width="128" height="128" rx="20" fill="#1E293B"/>
+  <rect x="22" y="34" width="84" height="20" rx="6" fill="#60A5FA"/>
+  <rect x="22" y="60" width="84" height="20" rx="6" fill="#34D399"/>
+  <rect x="22" y="86" width="84" height="10" rx="4" fill="#F59E0B"/>
+</svg>

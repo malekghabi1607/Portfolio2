@@ -9,19 +9,43 @@ const {
   MAIL_TO,
 } = process.env;
 
+const jsonHeaders = {
+  'Content-Type': 'application/json',
+};
+
+function jsonResponse(statusCode: number, body: Record<string, string>) {
+  return {
+    statusCode,
+    headers: jsonHeaders,
+    body: JSON.stringify(body),
+  };
+}
+
 export const handler: Handler = async (event) => {
   try {
     if (event.httpMethod !== 'POST') {
-      return { statusCode: 405, body: 'Method Not Allowed' };
+      return jsonResponse(405, { error: 'Method Not Allowed' });
+    }
+
+    const { name, email, message } = JSON.parse(event.body || '{}') as {
+      name?: string;
+      email?: string;
+      message?: string;
+    };
+    const trimmedName = name?.trim();
+    const trimmedEmail = email?.trim();
+    const trimmedMessage = message?.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedMessage) {
+      return jsonResponse(400, { error: 'Missing fields' });
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      return jsonResponse(400, { error: 'Invalid email' });
     }
 
     if (!MAIL_HOST || !MAIL_PORT || !MAIL_USER || !MAIL_PASS || !MAIL_TO) {
-      return { statusCode: 500, body: 'Server email configuration missing' };
-    }
-
-    const { name, email, message } = JSON.parse(event.body || '{}');
-    if (!name || !email || !message) {
-      return { statusCode: 400, body: 'Missing fields' };
+      return jsonResponse(500, { error: 'Server email configuration missing' });
     }
 
     const transporter = nodemailer.createTransport({
@@ -34,15 +58,14 @@ export const handler: Handler = async (event) => {
     await transporter.sendMail({
       from: `"Portfolio" <${MAIL_USER}>`,
       to: MAIL_TO,
-      subject: `📩 Nouveau message de ${name}`,
-      replyTo: email,
-      text: `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      subject: `Nouveau message de ${trimmedName}`,
+      replyTo: trimmedEmail,
+      text: `Nom: ${trimmedName}\nEmail: ${trimmedEmail}\n\nMessage:\n${trimmedMessage}`,
     });
 
-    return { statusCode: 200, body: 'OK' };
-  } // eslint-disable-next-line @typescript-eslint/no-explicit-any
-catch (err: any) {
-  console.error(err);
-  return { statusCode: 500, body: 'Erreur interne' };
-}
+    return jsonResponse(200, { status: 'ok' });
+  } catch (err: unknown) {
+    console.error(err);
+    return jsonResponse(500, { error: 'Internal server error' });
+  }
 };

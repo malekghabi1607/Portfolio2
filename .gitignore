@@ -1,6 +1,8 @@
-node_modules
-.env
 node_modules/
 .env
-node_modules/
-.env
+
+# Local Netlify folder
+.netlify
+
+# macOS
+.DS_Store
