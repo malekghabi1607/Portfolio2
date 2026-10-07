@@ -66,7 +66,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
       technicalSkills: 'Compétences techniques',
       viewDetails: 'Voir les détails',
       contactMe: 'Contactez-moi',
-      contactText: 'Vous avez une alternance ou un projet en tête ? N\'hésitez pas à me contacter.',
+      contactText: 'Une opportunité, un projet ou une question ? N\'hésitez pas à me contacter.',
       sendMessage: 'Envoyer le message',
       sending: 'Envoi en cours...',
       successMessage: 'Message envoyé avec succès !',
@@ -81,7 +81,14 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
       music: 'Musique - Guitare',
       design: 'Design - peinture',
       travel: 'Voyage - culture étrangère',
-      podcast: 'Podcast - montage vidéo'
+      podcast: 'Podcast - montage vidéo',
+      phone: 'Téléphone',
+      french: 'Français',
+      arabic: 'Arabe',
+      english: 'Anglais',
+      italian: 'Italien',
+      native: 'Natif',
+      intermediate: 'Intermédiaire'
     },
     en: {
       home: 'Home',
@@ -109,7 +116,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
       technicalSkills: 'Technical Skills',
       viewDetails: 'View details',
       contactMe: 'Contact me',
-      contactText: 'Do you have a work-study opportunity or a project in mind? Feel free to contact me.',
+      contactText: 'An opportunity, a project or a question? Feel free to get in touch.',
       sendMessage: 'Send message',
       sending: 'Sending...',
       successMessage: 'Message sent successfully!',
@@ -124,7 +131,14 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
       music: 'Music - Guitar',
       design: 'Design - painting',
       travel: 'Travel - foreign culture',
-      podcast: 'Podcast - video editing'
+      podcast: 'Podcast - video editing',
+      phone: 'Phone',
+      french: 'French',
+      arabic: 'Arabic',
+      english: 'English',
+      italian: 'Italian',
+      native: 'Native',
+      intermediate: 'Intermediate'
     }
   };
 
@@ -145,7 +159,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
     },
     {
       href: 'tel:+33604102156',
-      label: 'Téléphone: +33 6 04 10 21 56',
+      label: `${t.phone}: +33 6 04 10 21 56`,
       icon: Phone,
     },
     {
@@ -315,7 +329,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
           <div className={`flex flex-wrap justify-center gap-4 mb-8 animate-fade-in ${isDark ? 'text-gray-200' : 'text-gray-600'}`}>
             <div className={`flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm ${isDark ? 'bg-gray-800/60' : 'bg-white/60'}`}>
               <MapPin className={`w-4 h-4 ${isDark ? 'text-cyan-400' : 'text-blue-900'}`} />
-              <span>Avignon</span>
+              <span>Cluses</span>
             </div>
             <div className={`flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm ${isDark ? 'bg-gray-800/60' : 'bg-white/60'}`}>
               <Phone className={`w-4 h-4 ${isDark ? 'text-amber-400' : 'text-slate-900'}`} />
@@ -469,8 +483,8 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>Français</span>
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Natif</span>
+                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.french}</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t.native}</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
                     <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '100%'}}></div>
@@ -478,8 +492,8 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>Arabe</span>
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Natif</span>
+                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.arabic}</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t.native}</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
                     <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '100%'}}></div>
@@ -487,7 +501,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>Anglais</span>
+                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.english}</span>
                     <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>B2</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
@@ -496,11 +510,11 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>Italien</span>
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>B2</span>
+                    <span className={`font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{t.italian}</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t.intermediate}</span>
                   </div>
                   <div className={`w-full h-2 rounded-full ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '75%'}}></div>
+                    <div className={`h-full rounded-full ${isDark ? 'bg-gradient-to-r from-cyan-500 to-blue-500' : 'bg-gradient-to-r from-slate-900 to-blue-900'}`} style={{width: '60%'}}></div>
                   </div>
                 </div>
               </div>
@@ -903,8 +917,8 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               </p>
               <p className="mt-2 text-sm text-gray-300">
                 {language === 'fr'
-                  ? 'Développement / Systèmes / Data - Avignon'
-                  : 'Development / Systems / Data - Avignon'}
+                  ? 'Développement / Systèmes / Data - Cluses'
+                  : 'Development / Systems / Data - Cluses'}
               </p>
             </div>
 
@@ -930,7 +944,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
 
           <div className="mt-8 pt-6 border-t border-white/15 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-sm text-gray-300">
             <p>
-              © 2025 Malek Ghabi. {language === 'fr' ? 'Tous droits réservés.' : 'All rights reserved.'}
+              © {new Date().getFullYear()} Malek Ghabi. {language === 'fr' ? 'Tous droits réservés.' : 'All rights reserved.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
               <a href={contactLinks[0].href} className="hover:text-white transition-colors">

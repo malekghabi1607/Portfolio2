@@ -1054,16 +1054,16 @@ export const projects: Project[] = [
   titleEn: 'WithYou',
 
   descriptionFr:
-    "Plateforme collaborative de visionnage synchronise permettant a plusieurs utilisateurs de regarder des videos ensemble et d'interagir en temps reel.",
+    "Plateforme collaborative de visionnage synchronisé permettant à plusieurs utilisateurs de regarder des vidéos ensemble et d'interagir en temps réel.",
   descriptionEn:
     "Collaborative synchronized-watch platform enabling multiple users to watch videos together and interact in real time.",
 
   longDescriptionFr: [
-    "WithYou est une application web developpee dans le cadre du module Ingenierie Logicielle (Semestre 5). Elle permet de regarder la meme video de facon synchronisee, creer ou rejoindre des salons virtuels et discuter en direct via un chat temps reel.",
-    "Le projet propose aussi des interactions de groupe: gestion de playlists, permissions selon le role utilisateur, sondages simples et liste des salons publics.",
-    "L'architecture est separee en trois blocs: client React/Vite, API Laravel, et service realtime (Socket.io), avec un workflow de deploiement prevu pour Netlify/Render/Railway.",
-    "Statut actuel: MVP en cours de developpement, architecture complete validee, base de donnees fonctionnelle.",
-    "L'equipe projet est composee de Malek Ghabi, Meriem Takdjerad, Wissam Taleb, Lamia Taleb et Yanis Laftimi."
+    "WithYou est une application web développée dans le cadre du module Ingénierie Logicielle (semestre 5). Elle permet de regarder la même vidéo de façon synchronisée, de créer ou rejoindre des salons virtuels et de discuter en direct via un chat en temps réel.",
+    "Le projet propose aussi des interactions de groupe : gestion de playlists, permissions selon le rôle utilisateur, sondages simples et liste des salons publics.",
+    "L'architecture est séparée en trois blocs : client React/Vite, API Laravel et service temps réel (Socket.io), avec un déploiement prévu sur Netlify/Render/Railway.",
+    "Statut actuel : MVP en cours de développement, architecture complète validée, base de données fonctionnelle.",
+    "L'équipe projet est composée de Malek Ghabi, Meriem Takdjerad, Wissam Taleb, Lamia Taleb et Yanis Laftimi."
   ],
   longDescriptionEn: [
     "WithYou is a web application built for the Software Engineering module (Semester 5). It lets users watch the same video in sync, create or join virtual rooms, and chat in real time.",
@@ -1075,9 +1075,9 @@ export const projects: Project[] = [
 
   featuresFr: [
     "Inscription et authentification",
-    "Creation et gestion de salons",
-    "Lecture video synchronisee (YouTube IFrame API)",
-    "Chat en temps reel",
+    "Création et gestion de salons",
+    "Lecture vidéo synchronisée (YouTube IFrame API)",
+    "Chat en temps réel",
     "Gestion des membres et permissions",
     "Sondages et interactions simples",
     "Liste des salons publics"
@@ -1093,9 +1093,9 @@ export const projects: Project[] = [
   ],
 
   challengesFr: [
-    "Maintenir une synchronisation stable entre la video et tous les clients connectes.",
-    "Coordonner plusieurs canaux temps reel (chat, salons, permissions) sans conflit.",
-    "Integrer proprement YouTube IFrame API avec les evenements applicatifs.",
+    "Maintenir une synchronisation stable entre la vidéo et tous les clients connectés.",
+    "Coordonner plusieurs canaux temps réel (chat, salons, permissions) sans conflit.",
+    "Intégrer proprement la YouTube IFrame API aux événements applicatifs.",
     "Faire coexister Socket.io et Laravel Reverb selon les besoins du projet."
   ],
   challengesEn: [
