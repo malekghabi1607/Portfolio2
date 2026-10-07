@@ -310,9 +310,8 @@ export const projects: Project[] = [
 
     
     githubUrl: 'https://github.com/malekghabi1607/Luna_Perla',
-    liveUrl: 'https://pedago01c.univ-avignon.fr/~uapv2401806/luna_perla-/',
-    liveNoteFr: 'Acces via VPN universitaire requis.',
-    liveNoteEn: 'University VPN access required.',
+    liveNoteFr: 'Hébergé sur le serveur pédagogique d’Avignon Université, accessible uniquement depuis le réseau universitaire. Code disponible sur GitHub.',
+    liveNoteEn: 'Hosted on the Avignon University teaching server, only reachable from the university network. Code available on GitHub.',
   },
 
   {
@@ -973,7 +972,8 @@ export const projects: Project[] = [
     '/images/projects/portfolio-v1-3.jpg'
   ],
   githubUrl: 'https://github.com/malekghabi1607/Portfolio-',
-  liveUrl: 'https://www.portfoliomalekghabi.com',
+  liveNoteFr: 'Première version du portfolio, plus en ligne. Code disponible sur GitHub.',
+  liveNoteEn: 'First version of the portfolio, no longer online. Code available on GitHub.',
 },
 
 {
@@ -1043,9 +1043,8 @@ export const projects: Project[] = [
     'https://github.com/user-attachments/assets/db66ba11-c28b-459e-8095-5206aad86b96',
     'https://github.com/user-attachments/assets/f120f624-5ef3-4fd7-8767-9ebdedacbc8c'
   ],
-  liveUrl: 'https://pedago01c.univ-avignon.fr/~uapv2401806/projet/L3/mon_projet_yii/cericar/web/index.php?r=site%2Findex',
-  liveNoteFr: 'Acces via VPN universitaire requis.',
-  liveNoteEn: 'University VPN access required.',
+  liveNoteFr: 'Hébergé sur le serveur pédagogique d’Avignon Université, accessible uniquement depuis le réseau universitaire. Code disponible sur GitHub.',
+  liveNoteEn: 'Hosted on the Avignon University teaching server, only reachable from the university network. Code available on GitHub.',
   githubUrl: 'https://github.com/malekghabi1607/cericar'
 },
 

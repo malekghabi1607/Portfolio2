@@ -85,6 +85,9 @@ const accentStyles: Record<SkillCategory['accent'], AccentStyle> = {
   },
 };
 
+// Logos aux couleurs trop sombres pour le fond du mode sombre : affichés sur un fond clair
+const darkLogos = new Set(['GitHub', 'GitHub Actions', 'MySQL', 'MongoDB']);
+
 const categoryIcons = {
   frontend: Monitor,
   backend: Server,
@@ -219,7 +222,7 @@ function SkillTile({
         <img
           src={skill.logo}
           alt={skill.name}
-          className="relative z-10 h-14 w-14 object-contain drop-shadow-md transition-all duration-300 group-hover/skill:scale-105 group-hover/skill:brightness-110"
+          className={`relative z-10 h-14 w-14 object-contain drop-shadow-md transition-all duration-300 group-hover/skill:scale-105 group-hover/skill:brightness-110 ${isDark && darkLogos.has(skill.name) ? 'rounded-xl bg-slate-100/90 p-1.5' : ''}`}
           onError={(e) => {
             e.currentTarget.src = '/images/skills/_fallback.svg';
           }}
@@ -390,7 +393,7 @@ function NeuralLines({ isDark }: { isDark: boolean }) {
   );
 }
 
-function ThinkingAvatar({ isDark }: { isDark: boolean }) {
+function ThinkingAvatar({ isDark, language }: { isDark: boolean; language: 'fr' | 'en' }) {
   return (
     <div className="scroll-animate relative z-30 mx-auto grid h-[272px] w-[272px] place-items-center xl:absolute xl:left-[814px] xl:top-[394px]">
       <div className="skills-avatar-ring absolute inset-0 rounded-full opacity-80" />
@@ -407,7 +410,7 @@ function ThinkingAvatar({ isDark }: { isDark: boolean }) {
       <div className="skills-avatar-float relative h-[208px] w-[208px] overflow-hidden rounded-full border border-white/10 bg-gradient-to-b from-slate-900 to-slate-950 shadow-2xl">
         <img
           src="/images/avatar/skills-avatar.png"
-          alt={isDark ? 'Avatar développeuse en réflexion' : 'Avatar developpeuse en reflexion'}
+          alt={language === 'fr' ? 'Avatar de développeuse en réflexion' : 'Thinking developer avatar'}
           className="absolute left-1/2 top-1/2 h-[258px] w-[258px] -translate-x-1/2 -translate-y-[44%] object-contain"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-cyan-300/5" />
@@ -435,7 +438,7 @@ export default function TechnicalSkillsSection({ isDark, language, title }: Tech
 
         <div className="relative mx-auto w-full xl:h-[720px] xl:w-[1235px] 2xl:h-[850px] 2xl:w-[1480px] min-[1800px]:h-[950px] min-[1800px]:w-[1670px]">
           <div className="xl:hidden">
-            <ThinkingAvatar isDark={isDark} />
+            <ThinkingAvatar isDark={isDark} language={language} />
           </div>
 
           <div className="mt-7 grid gap-4 md:grid-cols-2 xl:hidden">
@@ -446,7 +449,7 @@ export default function TechnicalSkillsSection({ isDark, language, title }: Tech
 
           <div className="absolute left-1/2 top-0 hidden h-[1080px] w-[1900px] origin-top -translate-x-1/2 scale-[0.64] xl:block 2xl:scale-[0.77] min-[1800px]:scale-[0.88]">
             <NeuralLines isDark={isDark} />
-            <ThinkingAvatar isDark={isDark} />
+            <ThinkingAvatar isDark={isDark} language={language} />
 
             <div>
               {skillCategories.map((category) => {
