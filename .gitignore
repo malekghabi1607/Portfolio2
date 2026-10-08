@@ -6,3 +6,9 @@ node_modules/
 
 # macOS
 .DS_Store
+
+# Fichiers temporaires LaTeX et aperçus du CV
+cv/*.aux
+cv/*.log
+cv/*.out
+cv/*_preview.png
