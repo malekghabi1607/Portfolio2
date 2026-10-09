@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]  # chaque push sur main relancera le déploiement
   schedule:
-    - cron: '0 5 * * *'  # chaque jour à 5 h UTC : ajoute les nouveaux dépôts GitHub (topic « portfolio »)
+    - cron: '0 5 * * *'  # chaque jour à 5 h UTC : ajoute les dépôts GitHub qui ont un portfolio.json
   workflow_dispatch:     # bouton « Run workflow » pour mettre à jour tout de suite
 
 permissions:

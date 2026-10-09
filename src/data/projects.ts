@@ -26,9 +26,8 @@ export interface Project {
   liveUrl?: string;
   liveNoteFr?: string;
   liveNoteEn?: string;
-  // Projets ajoutés automatiquement depuis GitHub (scripts/fetch-github-projects.mjs)
+  // Projets ajoutés automatiquement depuis GitHub (dépôts avec un portfolio.json)
   source?: 'github';
-  hasPortfolioJson?: boolean;
   updatedAt?: string;
 }
 
@@ -1258,5 +1257,5 @@ const curatedProjects: Project[] = [
 
 ];
 
-// Projets écrits à la main d'abord, puis ceux venant de GitHub (topic « portfolio »)
+// Projets écrits à la main d'abord, puis ceux venant de GitHub (dépôts avec un portfolio.json)
 export const projects: Project[] = [...curatedProjects, ...githubProjects];

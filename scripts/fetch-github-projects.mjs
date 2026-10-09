@@ -1,9 +1,10 @@
 /**
- * Récupère les dépôts GitHub marqués du topic « portfolio » et génère
- * src/data/githubProjects.generated.ts, fusionné avec les projets de projects.ts.
+ * Ajoute au portfolio chaque dépôt GitHub public qui contient un fichier
+ * portfolio.json à sa racine, et génère src/data/githubProjects.generated.ts
+ * (fusionné avec les projets de projects.ts).
  *
- * Pour chaque dépôt, un fichier portfolio.json (optionnel) à la racine permet
- * d'enrichir la fiche : textes FR/EN, captures, fonctionnalités… (voir docs/portfolio-json.md).
+ * Le contenu de portfolio.json décrit la fiche : textes FR/EN, captures,
+ * fonctionnalités… (voir docs/portfolio-json.md).
  *
  * Le script ne fait jamais échouer le build : en cas d'erreur réseau, il garde
  * le dernier fichier généré (ou en crée un vide).
@@ -13,7 +14,6 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const GITHUB_USER = 'malekghabi1607';
-const TOPIC = 'portfolio';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const outputFile = resolve(root, 'src/data/githubProjects.generated.ts');
@@ -48,15 +48,18 @@ const asStringList = (value) =>
   Array.isArray(value) ? value.filter((v) => typeof v === 'string' && v.trim()).map((v) => v.trim()) : undefined;
 const asText = (value) => asStringList(value) ?? asString(value);
 
+// Contenu de portfolio.json, ou null si le dépôt n'en a pas
 async function readPortfolioJson(repo) {
   const url = `https://raw.githubusercontent.com/${repo.full_name}/${repo.default_branch}/portfolio.json`;
   const response = await fetch(url, { headers: { 'User-Agent': headers['User-Agent'] } });
-  if (response.status === 404) return {};
+  if (response.status === 404) return null;
   if (!response.ok) throw new Error(`${url} → HTTP ${response.status}`);
   try {
-    return await response.json();
+    const meta = await response.json();
+    return meta && typeof meta === 'object' && !Array.isArray(meta) ? meta : {};
   } catch {
-    console.warn(`⚠️  ${repo.name}/portfolio.json n'est pas un JSON valide : il est ignoré.`);
+    // Fichier présent mais mal écrit : le projet s'affiche quand même, avec les infos GitHub
+    console.warn(`⚠️  ${repo.name}/portfolio.json n'est pas un JSON valide : infos GitHub utilisées à la place.`);
     return {};
   }
 }
@@ -74,8 +77,7 @@ function toProject(repo, meta) {
     asString(meta.descriptionFr) ?? asString(meta.descriptionEn) ?? (ghDescription || 'Projet publié sur GitHub.');
   const descriptionEn =
     asString(meta.descriptionEn) ?? asString(meta.descriptionFr) ?? (ghDescription || 'Project published on GitHub.');
-  const topics = (repo.topics ?? []).filter((t) => t !== TOPIC);
-  const tech = asStringList(meta.tech) ?? [...new Set([repo.language, ...topics].filter(Boolean))];
+  const tech = asStringList(meta.tech) ?? [...new Set([repo.language, ...(repo.topics ?? [])].filter(Boolean))];
 
   return {
     id: `gh-${repo.name.toLowerCase()}`,
@@ -98,8 +100,6 @@ function toProject(repo, meta) {
     liveNoteFr: asString(meta.liveNoteFr),
     liveNoteEn: asString(meta.liveNoteEn),
     source: 'github',
-    // Fiche « simple » (badge Depuis GitHub) si aucun portfolio.json
-    hasPortfolioJson: Object.keys(meta).length > 0,
     updatedAt: repo.pushed_at,
   };
 }
@@ -110,22 +110,21 @@ async function main() {
   const repos = await response.json();
 
   const curated = curatedRepoUrls();
-  const selected = repos.filter(
-    (r) => !r.fork && !r.archived && (r.topics ?? []).includes(TOPIC) && !curated.has(r.html_url.toLowerCase())
-  );
+  const candidates = repos.filter((r) => !r.fork && !r.archived && !curated.has(r.html_url.toLowerCase()));
 
-  const projects = [];
-  for (const repo of selected) {
-    projects.push(toProject(repo, await readPortfolioJson(repo)));
-  }
+  // Cherche portfolio.json dans tous les dépôts en parallèle ; seuls ceux qui en ont un sont gardés
+  const metas = await Promise.all(candidates.map(readPortfolioJson));
+  const projects = candidates.flatMap((repo, i) => (metas[i] ? [toProject(repo, metas[i])] : []));
   // Du plus récent au plus ancien
   projects.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 
   // Supprime les champs vides pour garder le fichier généré lisible
   const clean = projects.map((p) => Object.fromEntries(Object.entries(p).filter(([, v]) => v !== undefined)));
   writeOutput(clean);
-  console.log(`✓ Projets GitHub : ${clean.length} dépôt(s) avec le topic « ${TOPIC} » ajouté(s) au portfolio.`);
-  for (const p of clean) console.log(`   - ${p.titleEn}${p.hasPortfolioJson ? ' (portfolio.json)' : ' (fiche simple)'}`);
+  console.log(
+    `✓ Projets GitHub : ${clean.length} dépôt(s) avec un portfolio.json ajouté(s) au portfolio (${candidates.length} dépôts vérifiés).`
+  );
+  for (const p of clean) console.log(`   - ${p.title} → ${p.githubUrl}`);
 }
 
 main().catch((err) => {

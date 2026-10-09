@@ -1,51 +1,48 @@
 # Ajouter un projet GitHub au portfolio
 
-Les dépôts publics qui portent le topic **`portfolio`** sont ajoutés automatiquement
-à la section Projets (script `scripts/fetch-github-projects.mjs`, lancé à chaque build).
+**Règle unique : un dépôt public qui contient un fichier `portfolio.json` à sa racine
+apparaît dans la section Projets du portfolio.**
 
-## 1. Afficher un dépôt
+Le script `scripts/fetch-github-projects.mjs` vérifie tous les dépôts publics à chaque build.
 
-1. Sur la page GitHub du dépôt, cliquer sur l'engrenage ⚙️ à côté de **About**.
-2. Dans **Topics**, ajouter `portfolio`, puis **Save changes**.
-3. Le projet apparaît au prochain déploiement :
+## 1. Ajouter un projet
+
+1. Dans le dépôt du projet (pas dans le portfolio), créer un fichier `portfolio.json`
+   **à la racine** (au même niveau que le README).
+2. Le pousser sur la branche principale du dépôt (`main` ou `master`).
+3. Le projet apparaît au prochain déploiement du portfolio :
    - automatiquement chaque jour (vers 7 h, heure de Paris) ;
-   - ou tout de suite : onglet **Actions** du dépôt `Portfolio2` →
+   - ou tout de suite : dépôt `Portfolio2` → onglet **Actions** →
      **Deploy Vite Portfolio to GitHub Pages** → **Run workflow**.
 
-Pour retirer un projet : enlever le topic `portfolio`.
+Pour retirer un projet : supprimer son `portfolio.json`.
 
-Sans autre fichier, la carte est **simple** (badge « Depuis GitHub ») :
+Ne sont jamais ajoutés : les dépôts privés, les forks, les dépôts archivés,
+et ceux déjà décrits à la main dans `src/data/projects.ts` (pas de doublon).
 
-| Ce qui s'affiche | D'où ça vient sur GitHub |
-|---|---|
-| Titre | nom du dépôt |
-| Description | champ *Description* du dépôt (même texte en FR et en EN) |
-| Technologies | langage principal + autres topics du dépôt |
-| Image | aperçu généré automatiquement par GitHub |
-| Lien « Voir le site » | champ *Website* du dépôt |
+## 2. Contenu de `portfolio.json`
 
-Les dépôts déjà décrits à la main dans `src/data/projects.ts` ne sont jamais ajoutés en double.
+Tous les champs sont optionnels. Un fichier vide `{}` suffit pour afficher le projet :
+les champs manquants reprennent les infos du dépôt GitHub.
 
-## 2. Enrichir la fiche avec `portfolio.json` (optionnel)
-
-Créer un fichier `portfolio.json` **à la racine du dépôt du projet** (pas dans le portfolio).
-Tous les champs sont optionnels : ceux qui manquent reprennent les infos GitHub ci-dessus.
-
-| Champ | Type | Rôle |
-|---|---|---|
-| `titleFr` / `titleEn` | texte | titre affiché en français / anglais |
-| `descriptionFr` / `descriptionEn` | texte | résumé court (carte + haut de la fiche) |
-| `longDescriptionFr` / `longDescriptionEn` | texte ou liste de paragraphes | onglet « Détails » |
-| `featuresFr` / `featuresEn` | liste | « Principales fonctionnalités » |
-| `challengesFr` / `challengesEn` | liste | « Défis et solutions » |
-| `tech` | liste | technologies (remplace langage + topics) |
-| `image` | chemin ou URL | image principale de la carte |
-| `gallery` | liste de chemins ou URL | captures de l'onglet « Médias » |
-| `liveUrl` | URL | lien « Voir le site » (remplace le champ *Website*) |
-| `liveNoteFr` / `liveNoteEn` | texte | petite note sous les liens (ex. accès restreint) |
+| Champ | Type | Où il s'affiche | Si absent |
+|---|---|---|---|
+| `titleFr` / `titleEn` | texte | titre de la carte et de la page | nom du dépôt |
+| `descriptionFr` / `descriptionEn` | texte | résumé court (carte + haut de la fiche) | *Description* du dépôt |
+| `longDescriptionFr` / `longDescriptionEn` | texte ou liste de paragraphes | onglet « Détails » | résumé court |
+| `featuresFr` / `featuresEn` | liste | « Principales fonctionnalités » | section masquée |
+| `challengesFr` / `challengesEn` | liste | « Défis et solutions » | section masquée |
+| `tech` | liste | badges des technologies | langage + topics du dépôt |
+| `image` | chemin ou URL | image de la carte | aperçu généré par GitHub |
+| `gallery` | liste de chemins ou URL | onglet « Médias » | section masquée |
+| `liveUrl` | URL | bouton « Voir le site » | champ *Website* du dépôt |
+| `liveNoteFr` / `liveNoteEn` | texte | petite note sous les liens | — |
 
 Les chemins d'images sont **relatifs à la racine du dépôt** (ex. `docs/capture1.png`) :
 les images doivent donc être poussées dans le dépôt. Une URL complète (`https://…`) fonctionne aussi.
+
+Si le fichier contient une erreur de syntaxe JSON, le projet s'affiche quand même
+avec les infos GitHub, et le build affiche un avertissement.
 
 ### Exemple complet
 
@@ -76,7 +73,7 @@ les images doivent donc être poussées dans le dépôt. Une URL complète (`htt
 
 Le texte de l'exemple est fictif : remplacer par la vraie description du projet.
 
-### Vérifier avant de publier
+## 3. Vérifier avant de publier
 
 Dans le dossier du portfolio :
 
@@ -84,5 +81,4 @@ Dans le dossier du portfolio :
 npm run github:projects
 ```
 
-Le script liste les dépôts trouvés et indique pour chacun `(portfolio.json)` ou `(fiche simple)`.
-Un `portfolio.json` mal formé est ignoré avec un avertissement (le projet s'affiche en fiche simple).
+Le script liste les dépôts trouvés avec un `portfolio.json`.
