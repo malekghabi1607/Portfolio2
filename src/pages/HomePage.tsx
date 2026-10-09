@@ -191,6 +191,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
     description: language === 'fr' ? p.descriptionFr : p.descriptionEn,
     tech: p.tech,
     image: p.image,
+    fromGithub: p.source === 'github',
   }));
 
   const education = educationData.map((edu) => ({
@@ -721,7 +722,13 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
                 className={`scroll-animate backdrop-blur-sm rounded-xl overflow-hidden border transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-xl cursor-pointer group ${isDark ? 'bg-gray-800/80 border-gray-700 hover:border-orange-500' : 'bg-white/80 border-stone-200 hover:border-blue-900'}`}
                 style={{transitionDelay: `${index * 0.1}s`}}
               >
-                <div className="h-48 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
+                  {project.fromGithub && (
+                    <span className={`absolute left-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold shadow-md ${isDark ? 'bg-gray-900/85 text-gray-100 ring-1 ring-white/15' : 'bg-white/90 text-slate-900 ring-1 ring-slate-900/10'}`}>
+                      <Github className="h-3.5 w-3.5" />
+                      {language === 'fr' ? 'Depuis GitHub' : 'From GitHub'}
+                    </span>
+                  )}
                   <img
                     src={project.image}
                     alt={project.title}

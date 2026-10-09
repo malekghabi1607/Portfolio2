@@ -3,6 +3,9 @@ name: Deploy Vite Portfolio to GitHub Pages
 on:
   push:
     branches: [ main ]  # chaque push sur main relancera le déploiement
+  schedule:
+    - cron: '0 5 * * *'  # chaque jour à 5 h UTC : ajoute les nouveaux dépôts GitHub (topic « portfolio »)
+  workflow_dispatch:     # bouton « Run workflow » pour mettre à jour tout de suite
 
 permissions:
   contents: read
@@ -25,7 +28,9 @@ jobs:
         run: npm ci
 
       - name: Build Vite project
-        run: npm run build
+        run: npm run build  # lance d'abord scripts/fetch-github-projects.mjs (prebuild)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare SPA (React routing)
         run: cp dist/index.html dist/404.html || echo "done"

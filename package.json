@@ -4,10 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "github:projects": "node scripts/fetch-github-projects.mjs",
+    "predev": "npm run github:projects",
     "dev": "vite",
+    "prebuild": "npm run github:projects",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "pretypecheck": "npm run github:projects",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {

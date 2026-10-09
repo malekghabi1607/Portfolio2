@@ -5,6 +5,7 @@
  * Each project includes title, description (in both FR and EN), technologies used, and image path.
  */
 // src/data/projects.ts
+import { githubProjects } from './githubProjects.generated';
 
 export interface Project {
   id: string;
@@ -25,9 +26,13 @@ export interface Project {
   liveUrl?: string;
   liveNoteFr?: string;
   liveNoteEn?: string;
+  // Projets ajoutés automatiquement depuis GitHub (scripts/fetch-github-projects.mjs)
+  source?: 'github';
+  hasPortfolioJson?: boolean;
+  updatedAt?: string;
 }
 
-export const projects: Project[] = [
+const curatedProjects: Project[] = [
   {
     id: 'easymonitor',
     title: 'EasyMonitor',
@@ -1252,3 +1257,6 @@ export const projects: Project[] = [
 
 
 ];
+
+// Projets écrits à la main d'abord, puis ceux venant de GitHub (topic « portfolio »)
+export const projects: Project[] = [...curatedProjects, ...githubProjects];

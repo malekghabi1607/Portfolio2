@@ -15,3 +15,6 @@ cv/*_preview.png
 
 # Build généré (reconstruit par GitHub Actions / Netlify)
 dist/
+
+# Projets GitHub générés au build (scripts/fetch-github-projects.mjs)
+src/data/githubProjects.generated.ts
