@@ -7,7 +7,24 @@ import ProjectDetailPage from './pages/ProjectDetailPage';
 type Lang = 'fr' | 'en';
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true);
+  // L'écran d'accueil ne s'affiche qu'à la première visite
+  const [showSplash, setShowSplash] = useState(() => {
+    try {
+      return localStorage.getItem('splashSeen') !== 'true';
+    } catch (err) {
+      console.debug('splash read failed', err);
+      return true;
+    }
+  });
+
+  const handleSplashComplete = () => {
+    try {
+      localStorage.setItem('splashSeen', 'true');
+    } catch (err) {
+      console.debug('splash write failed', err);
+    }
+    setShowSplash(false);
+  };
 
   // Initialisation persistante du thème
   const [isDark, setIsDark] = useState(() => {
@@ -54,7 +71,7 @@ function App() {
   }, [language]);
 
   if (showSplash) {
-    return <WelcomeSplash onComplete={() => setShowSplash(false)} />;
+    return <WelcomeSplash onComplete={handleSplashComplete} />;
   }
 
   return (

@@ -1,4 +1,6 @@
 export type ContactForm = { name: string; email: string; message: string };
+// Données anti-spam envoyées en plus du formulaire
+export type ContactPayload = ContactForm & { website: string; elapsedMs: number };
 export type ContactResult = {
   success: boolean;
   error?: string;
@@ -14,7 +16,7 @@ function buildMailtoUrl(data: ContactForm): string {
 }
 
 export async function sendContactEmail(
-  data: ContactForm
+  data: ContactPayload
 ): Promise<ContactResult> {
   try {
     const response = await fetch('/.netlify/functions/send-contact-email', {

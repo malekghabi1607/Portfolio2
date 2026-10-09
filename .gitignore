@@ -12,3 +12,6 @@ cv/*.aux
 cv/*.log
 cv/*.out
 cv/*_preview.png
+
+# Build généré (reconstruit par GitHub Actions / Netlify)
+dist/

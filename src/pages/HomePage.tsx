@@ -19,6 +19,9 @@ interface HomePageProps {
 export default function HomePage({ isDark, setIsDark, language, setLanguage }: HomePageProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  // Anti-spam : champ piège invisible + heure d'affichage du formulaire
+  const [honeypot, setHoneypot] = useState('');
+  const [formShownAt] = useState(() => Date.now());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
     type: 'success' | 'error';
@@ -813,7 +816,11 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               setIsSubmitting(true);
               setSubmitStatus(null);
 
-              const result = await sendContactEmail(formData);
+              const result = await sendContactEmail({
+                ...formData,
+                website: honeypot,
+                elapsedMs: Date.now() - formShownAt,
+              });
 
               if (result.success) {
                 setSubmitStatus({
@@ -852,6 +859,20 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               </div>
             )}
 
+            {/* Champ piège anti-spam : invisible pour les visiteurs, rempli par les robots */}
+            <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+              <label htmlFor="contact-hp">Ne pas remplir</label>
+              <input
+                type="text"
+                id="contact-hp"
+                name="contact-hp"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
+
             <div>
               <label htmlFor="name" className={`block font-medium mb-2 ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
                 {t.name}
@@ -859,6 +880,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               <input
                 type="text"
                 id="name"
+                maxLength={100}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
@@ -874,6 +896,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               <input
                 type="email"
                 id="email"
+                maxLength={254}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
@@ -888,6 +911,7 @@ export default function HomePage({ isDark, setIsDark, language, setLanguage }: H
               </label>
               <textarea
                 id="message"
+                maxLength={5000}
                 rows={6}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}

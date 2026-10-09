@@ -9,6 +9,11 @@ const {
   MAIL_TO,
 } = process.env;
 
+// Anti-spam : délai minimal (ms) entre l'affichage du formulaire et l'envoi,
+// et longueurs maximales des champs
+const MIN_FILL_TIME_MS = 3000;
+const MAX_LENGTHS = { name: 100, email: 254, message: 5000 };
+
 const jsonHeaders = {
   'Content-Type': 'application/json',
 };
@@ -27,17 +32,42 @@ export const handler: Handler = async (event) => {
       return jsonResponse(405, { error: 'Method Not Allowed' });
     }
 
-    const { name, email, message } = JSON.parse(event.body || '{}') as {
-      name?: string;
-      email?: string;
-      message?: string;
+    let payload: {
+      name?: unknown;
+      email?: unknown;
+      message?: unknown;
+      website?: unknown;
+      elapsedMs?: unknown;
     };
-    const trimmedName = name?.trim();
-    const trimmedEmail = email?.trim();
-    const trimmedMessage = message?.trim();
+    try {
+      payload = JSON.parse(event.body || '{}');
+    } catch {
+      return jsonResponse(400, { error: 'Invalid JSON' });
+    }
+
+    // Robot détecté (champ piège rempli, ou envoi trop rapide / hors formulaire) :
+    // on répond « ok » sans envoyer, pour ne pas lui indiquer qu'il a été bloqué.
+    const elapsedMs = Number(payload.elapsedMs);
+    if (payload.website || !Number.isFinite(elapsedMs) || elapsedMs < MIN_FILL_TIME_MS) {
+      return jsonResponse(200, { status: 'ok' });
+    }
+
+    const asText = (value: unknown) => (typeof value === 'string' ? value.trim() : '');
+    // Pas de retour à la ligne dans le nom : il est utilisé dans l'objet du mail
+    const trimmedName = asText(payload.name).replace(/[\r\n]+/g, ' ');
+    const trimmedEmail = asText(payload.email);
+    const trimmedMessage = asText(payload.message);
 
     if (!trimmedName || !trimmedEmail || !trimmedMessage) {
       return jsonResponse(400, { error: 'Missing fields' });
+    }
+
+    if (
+      trimmedName.length > MAX_LENGTHS.name ||
+      trimmedEmail.length > MAX_LENGTHS.email ||
+      trimmedMessage.length > MAX_LENGTHS.message
+    ) {
+      return jsonResponse(400, { error: 'Field too long' });
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
