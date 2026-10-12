@@ -9,6 +9,7 @@
     "dev": "vite",
     "prebuild": "npm run github:projects",
     "build": "vite build",
+    "postbuild": "node scripts/spa-routes.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "pretypecheck": "npm run github:projects",

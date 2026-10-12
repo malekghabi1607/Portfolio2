@@ -3,6 +3,12 @@
   publish = "dist"
   functions = "netlify/functions"
 
+[build.environment]
+  NODE_VERSION = "20"
+
+# Pas de redirection « /* → index.html » : elle casse `netlify dev` (Vite).
+# Les pages /project/<id> sont générées au build par scripts/spa-routes.mjs.
+
 [dev]
   command = "npm run dev -- --host 127.0.0.1"
   port = 8888

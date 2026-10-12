@@ -1240,7 +1240,7 @@ const curatedProjects: Project[] = [
     '/images/projects/portfolio-v2-1.jpg'
   ],
   githubUrl: 'https://github.com/malekghabi1607/Portfolio2',
-  liveUrl: 'https://malek-ghabi-portfolio.com',
+  liveUrl: 'https://malekghabi.netlify.app',
  
 }
 

@@ -13,7 +13,8 @@ Le script `scripts/fetch-github-projects.mjs` vérifie tous les dépôts publics
 3. Le projet apparaît au prochain déploiement du portfolio :
    - automatiquement chaque jour (vers 7 h, heure de Paris) ;
    - ou tout de suite : dépôt `Portfolio2` → onglet **Actions** →
-     **Deploy Vite Portfolio to GitHub Pages** → **Run workflow**.
+     **Rebuild quotidien Netlify** → **Run workflow**
+     (ou, sur Netlify : **Deploys** → **Trigger deploy**).
 
 Pour retirer un projet : supprimer son `portfolio.json`.
 

@@ -1,0 +1,28 @@
+name: Rebuild quotidien Netlify
+
+# Le site est hébergé sur Netlify, qui redéploie déjà à chaque push sur main.
+# Ce workflow relance en plus un build chaque jour, pour ajouter les dépôts GitHub
+# qui contiennent un portfolio.json (scripts/fetch-github-projects.mjs).
+#
+# Prérequis : un « Build hook » Netlify enregistré dans les secrets du dépôt
+# sous le nom NETLIFY_BUILD_HOOK (Settings → Secrets and variables → Actions).
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # chaque jour à 5 h UTC
+  workflow_dispatch:     # bouton « Run workflow » pour relancer tout de suite
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Déclencher un build Netlify
+        env:
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$NETLIFY_BUILD_HOOK" ]; then
+            echo "::warning::Secret NETLIFY_BUILD_HOOK absent : aucun build déclenché."
+            exit 0
+          fi
+          curl --fail --silent --show-error -X POST -d '{}' "$NETLIFY_BUILD_HOOK"
+          echo "Build Netlify déclenché."
